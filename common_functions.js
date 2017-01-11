@@ -6,7 +6,11 @@ var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
 
 // Object#toString tags
 var undefinedTag = '[object Undefined]',
-		nullTag = '[object Null]';
+		nullTag = '[object Null]',
+		funcTag = '[object Function]',
+		genTag = '[object GeneratorFunction]',
+		asyncTag = '[object AsyncFunction]',
+		proxyTag = '[object Proxy]';
 
 var commonFunctions = {
 	// 这个值被typeof判断为object或者function，且这个值不是null的时候，下列函数返回true，否则为false
@@ -61,6 +65,17 @@ var commonFunctions = {
 		return (symToStringTag && symToStringTag in Object(value))
 			? commonFunctions.getRawTag(value)
 			: commonFunctions.objectToString(value);
+	},
+	// 这里主要用到了Object.prototype.toString.call()的判断方式。
+	// 下面列举了四种在Object.prototype.toString.call()中的值可以被判断为funcion
+	isFunction: function(value) {
+		// 不确定这个判断是否多余。
+		if (!commonFunctions.isObject(value)) {
+			return false;
+		}
+
+		var tag = commonFunctions.baseGetTag(value);
+		return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
 	}
 };
 
@@ -100,9 +115,14 @@ module.exports = commonFunctions;
 // console.log(module.exports.objectToString(new Date())); // [object Date]
 // console.log(module.exports.objectToString(new Map())); // [object Map]
 
-console.log(module.exports.baseGetTag({name: 'bowen'})); // [object Object]
-console.log(module.exports.baseGetTag(null)); // [object Null]
+// console.log(module.exports.baseGetTag({name: 'bowen'})); // [object Object]
+// console.log(module.exports.baseGetTag(null)); // [object Null]
 
+console.log(commonFunctions.isFunction(function() {})); // true
+console.log(commonFunctions.isFunction({})); // false
+console.log(commonFunctions.isFunction(null)); // false
+console.log(commonFunctions.isFunction(undefined)); // false
+console.log(commonFunctions.isFunction(new Date())); // false
 
 
 
