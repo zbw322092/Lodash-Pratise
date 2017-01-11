@@ -76,6 +76,12 @@ var commonFunctions = {
 
 		var tag = commonFunctions.baseGetTag(value);
 		return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
+	},
+	// Lodash对array-like的定义很简单，就是有length属性，且这个属性值是个合法的数组长度值，且这个
+	// 值不是一个函数。
+	isArrayLike: function(value) {
+		return value != null && commonFunctions.isLength(value.length)
+			&& !commonFunctions.isFunction(value);
 	}
 };
 
@@ -118,12 +124,23 @@ module.exports = commonFunctions;
 // console.log(module.exports.baseGetTag({name: 'bowen'})); // [object Object]
 // console.log(module.exports.baseGetTag(null)); // [object Null]
 
-console.log(commonFunctions.isFunction(function() {})); // true
-console.log(commonFunctions.isFunction({})); // false
-console.log(commonFunctions.isFunction(null)); // false
-console.log(commonFunctions.isFunction(undefined)); // false
-console.log(commonFunctions.isFunction(new Date())); // false
+// console.log(commonFunctions.isFunction(function() {})); // true
+// console.log(commonFunctions.isFunction({})); // false
+// console.log(commonFunctions.isFunction(null)); // false
+// console.log(commonFunctions.isFunction(undefined)); // false
+// console.log(commonFunctions.isFunction(new Date())); // false
 
+var o1 = {};
+o1.length = 0;
+var o2 = {};
+o2.length = -1;
+console.log(commonFunctions.isArrayLike(new Date())); // false
+console.log(commonFunctions.isArrayLike('it is a string')); // true
+console.log(commonFunctions.isArrayLike(o1)); // true
+console.log(commonFunctions.isArrayLike(o2)); // false
+console.log(commonFunctions.isArrayLike([])); // true
+console.log(commonFunctions.isArrayLike(null)); // false
+console.log(commonFunctions.isArrayLike(undefined)); // false
 
 
 
