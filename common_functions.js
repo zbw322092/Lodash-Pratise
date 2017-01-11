@@ -79,9 +79,17 @@ var commonFunctions = {
 	},
 	// Lodash对array-like的定义很简单，就是有length属性，且这个属性值是个合法的数组长度值，且这个
 	// 值不是一个函数。
+	// 注意，这里先排除了这个value值不能是undefined或者null，因为试图取这两个值的length属性时会报错，
+	// 而其他类型的值取length属性值的时候即使不存在也只是会返回undefined
 	isArrayLike: function(value) {
 		return value != null && commonFunctions.isLength(value.length)
 			&& !commonFunctions.isFunction(value);
+	},
+	// 这里定义的isObjectLike很宽松，只要满足两个条件：
+	// 不是null
+	// typeof返回object
+	isObjectLike: function(value) {
+		return value !== null && typeof value === 'object';
 	}
 };
 
@@ -130,18 +138,24 @@ module.exports = commonFunctions;
 // console.log(commonFunctions.isFunction(undefined)); // false
 // console.log(commonFunctions.isFunction(new Date())); // false
 
-var o1 = {};
-o1.length = 0;
-var o2 = {};
-o2.length = -1;
-console.log(commonFunctions.isArrayLike(new Date())); // false
-console.log(commonFunctions.isArrayLike('it is a string')); // true
-console.log(commonFunctions.isArrayLike(o1)); // true
-console.log(commonFunctions.isArrayLike(o2)); // false
-console.log(commonFunctions.isArrayLike([])); // true
-console.log(commonFunctions.isArrayLike(null)); // false
-console.log(commonFunctions.isArrayLike(undefined)); // false
+// var o1 = {};
+// o1.length = 0;
+// var o2 = {};
+// o2.length = -1;
+// console.log(commonFunctions.isArrayLike(new Date())); // false
+// console.log(commonFunctions.isArrayLike('it is a string')); // true
+// console.log(commonFunctions.isArrayLike(o1)); // true
+// console.log(commonFunctions.isArrayLike(o2)); // false
+// console.log(commonFunctions.isArrayLike([])); // true
+// console.log(commonFunctions.isArrayLike(null)); // false
+// console.log(commonFunctions.isArrayLike(undefined)); // false
 
+console.log(commonFunctions.isObjectLike(new Date())); // true
+console.log(commonFunctions.isObjectLike({})); // true
+console.log(commonFunctions.isObjectLike([1,2,3])); // true
+console.log(commonFunctions.isObjectLike(function(){})); // false
+console.log(commonFunctions.isObjectLike(undefined)); // false
+console.log(commonFunctions.isObjectLike(null)); // false
 
 
 
