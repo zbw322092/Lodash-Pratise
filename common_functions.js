@@ -1,6 +1,14 @@
 var objectProto = Object.prototype;
 var nativeObjectToString = objectProto.toString;
-module.exports = {
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
+
+// Object#toString tags
+var undefinedTag = '[object Undefined]',
+		nullTag = '[object Null]';
+
+var commonFunctions = {
 	// 这个值被typeof判断为object或者function，且这个值不是null的时候，下列函数返回true，否则为false
 	// 要点：
 	// typeof的可能值。
@@ -24,8 +32,39 @@ module.exports = {
 	// 通过调用Object原型中的toString方法来生成一个string，我们可以从这个string中获得类的信息。
 	objectToString: function(value) {
 		return nativeObjectToString.call(value);
+	},
+	// ++++
+	// A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values
+	getRawTag: function(value) {
+		var isOwn = hasOwnProperty.call(value, symToStringTag),
+			tag = value[symToStringTag];
+
+		try {
+			value[symToStringTag] = undefined;
+			var unmasked = true;
+		} catch(e) {}
+
+		var result = nativeObjectToString.call(value);
+		if (unmasked) {
+			value[symToStringTag] = tag;
+		} else {
+			delete value[symToStringTag];
+		}
+		return result;
+	},
+	// The base implementation of `getTag` without fallbacks for buggy environments.
+	baseGetTag: function(value) {
+		// 给undefined和null类型定义两个单独的tags
+		if (value == null) {
+			return value === undefined ? undefinedTag : nullTag;
+		}
+		return (symToStringTag && symToStringTag in Object(value))
+			? commonFunctions.getRawTag(value)
+			: commonFunctions.objectToString(value);
 	}
 };
+
+module.exports = commonFunctions;
 
 /* ***************************TESTING***************************************** */
 // console.log(module.exports.isObject(function() {})); // true
@@ -50,18 +89,19 @@ module.exports = {
 // console.log(module.exports.isLength(-0)); // true
 // console.log(module.exports.isLength(1.23)); // false
 
-console.log(module.exports.objectToString({name: 'bowen'})); // [object Object]
-console.log(module.exports.objectToString(123)); // [object Number]
-console.log(module.exports.objectToString('it is a string')); // [object String]
-console.log(module.exports.objectToString(function(){})); // [object Function]
-console.log(module.exports.objectToString(null)); // [object Null]
-console.log(module.exports.objectToString(undefined)); // [object Undefined]
-console.log(module.exports.objectToString(NaN)); // [object Number]
-console.log(module.exports.objectToString([1,2,3])); // [object Array]
+// console.log(module.exports.objectToString({name: 'bowen'})); // [object Object]
+// console.log(module.exports.objectToString(123)); // [object Number]
+// console.log(module.exports.objectToString('it is a string')); // [object String]
+// console.log(module.exports.objectToString(function(){})); // [object Function]
+// console.log(module.exports.objectToString(null)); // [object Null]
+// console.log(module.exports.objectToString(undefined)); // [object Undefined]
+// console.log(module.exports.objectToString(NaN)); // [object Number]
+// console.log(module.exports.objectToString([1,2,3])); // [object Array]
+// console.log(module.exports.objectToString(new Date())); // [object Date]
+// console.log(module.exports.objectToString(new Map())); // [object Map]
 
-
-
-
+console.log(module.exports.baseGetTag({name: 'bowen'})); // [object Object]
+console.log(module.exports.baseGetTag(null)); // [object Null]
 
 
 
