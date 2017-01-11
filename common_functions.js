@@ -77,8 +77,12 @@ var commonFunctions = {
 		var tag = commonFunctions.baseGetTag(value);
 		return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
 	},
-	// Lodash对array-like的定义很简单，就是有length属性，且这个属性值是个合法的数组长度值，且这个
-	// 值不是一个函数。
+	// Lodash对array-like的定义很简单，
+	// 就是有length属性，
+	// 且这个属性值是个合法的数组长度值，
+	// 且这个值不是一个函数。
+	// 
+	// 这样子string也会被判为true。
 	// 注意，这里先排除了这个value值不能是undefined或者null，因为试图取这两个值的length属性时会报错，
 	// 而其他类型的值取length属性值的时候即使不存在也只是会返回undefined
 	isArrayLike: function(value) {
@@ -90,6 +94,14 @@ var commonFunctions = {
 	// typeof返回object
 	isObjectLike: function(value) {
 		return value !== null && typeof value === 'object';
+	},
+	// 这个方法就是在isArrayLike的基础上进一步规定tyeof值是object。总结起来
+	// 1. typeof返回object
+	// 2. 在此基础上排除掉null
+	// 3. 有length属性
+	// 4. length属性值是个合法的数组长度值
+	isArrayLikeObject: function(value) {
+		return commonFunctions.isArrayLike(value) && commonFunctions.isObjectLike(value);
 	}
 };
 
@@ -150,12 +162,23 @@ module.exports = commonFunctions;
 // console.log(commonFunctions.isArrayLike(null)); // false
 // console.log(commonFunctions.isArrayLike(undefined)); // false
 
-console.log(commonFunctions.isObjectLike(new Date())); // true
-console.log(commonFunctions.isObjectLike({})); // true
-console.log(commonFunctions.isObjectLike([1,2,3])); // true
-console.log(commonFunctions.isObjectLike(function(){})); // false
-console.log(commonFunctions.isObjectLike(undefined)); // false
-console.log(commonFunctions.isObjectLike(null)); // false
+// console.log(commonFunctions.isObjectLike(new Date())); // true
+// console.log(commonFunctions.isObjectLike({})); // true
+// console.log(commonFunctions.isObjectLike([1,2,3])); // true
+// console.log(commonFunctions.isObjectLike(function(){})); // false
+// console.log(commonFunctions.isObjectLike(undefined)); // false
+// console.log(commonFunctions.isObjectLike(null)); // false
+
+console.log(commonFunctions.isArrayLikeObject(null)); // false
+console.log(commonFunctions.isArrayLikeObject(undefined)); // false
+console.log(commonFunctions.isArrayLikeObject('it is a string')); // false
+console.log(commonFunctions.isArrayLikeObject(new Date())); // false
+console.log(commonFunctions.isArrayLikeObject(function() {})); // false
+console.log(commonFunctions.isArrayLikeObject({})); // false
+console.log(commonFunctions.isArrayLikeObject({length: -1})); // false
+console.log(commonFunctions.isArrayLikeObject({length: 1.23})); // false
+console.log(commonFunctions.isArrayLikeObject({length: 0})); // true
+console.log(commonFunctions.isArrayLikeObject([])); // true
 
 
 
