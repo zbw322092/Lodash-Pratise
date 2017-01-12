@@ -121,6 +121,24 @@ var commonFunctions = {
 	// 这个将两个NaN当成相对对待。
 	eq: function(value, other) {
 		return value === other || (value !== value && other !== other);
+	},
+	// Check if the given arguments are from an iteratee call
+	isIterateeCall: function(value, index, object) {
+		// 如果实参object不是object，直接返回false
+		if(!commonFunctions.isObject(object)) {
+			return false;
+		}
+
+		var type = typeof index;
+		// 这里限制了index的数据类型只可以是number或者string。
+		// 如果index是number，就看传入的object是不是arrayLike的，然后index是否能通过isIndex函数
+		// 如果index是string，则直接检测index是否在object中。（in 操作符）
+		if (type === 'number'
+			? (commonFunctions.isArrayLike(object) && commonFunctions.isIndex(index, object.length)) :
+			(type === 'string' && index in object)) {
+			return commonFunctions.eq(object[index], value);
+		}
+		return false;
 	}
 };
 
@@ -211,15 +229,19 @@ module.exports = commonFunctions;
 // console.log(commonFunctions.isIndex('123', 124.5)); // true
 // console.log(commonFunctions.isIndex('123', function(){})); // true
 
-var o3 = {name: 'bowen'};
-var o4 = {name: 'bowen'};
-console.log(commonFunctions.eq(o3, o4)); // false
-console.log(commonFunctions.eq([1,2,3], [1,2,3])); // false
-console.log(commonFunctions.eq(123, '123')); // false
-console.log(commonFunctions.eq(null, null)); // true
-console.log(commonFunctions.eq(undefined, undefined)); // true
-console.log(commonFunctions.eq(NaN, NaN)); // true
+// var o3 = {name: 'bowen'};
+// var o4 = {name: 'bowen'};
+// console.log(commonFunctions.eq(o3, o4)); // false
+// console.log(commonFunctions.eq([1,2,3], [1,2,3])); // false
+// console.log(commonFunctions.eq(123, '123')); // false
+// console.log(commonFunctions.eq(null, null)); // true
+// console.log(commonFunctions.eq(undefined, undefined)); // true
+// console.log(commonFunctions.eq(NaN, NaN)); // true
 
+console.log(commonFunctions.isIterateeCall(23, 'age', {name: 'Bowen', age: 23})); // true
+console.log(commonFunctions.isIterateeCall(23, 'name', {name: 'Bowen', age: 23})); // false
+console.log(commonFunctions.isIterateeCall(23, 1, {0: 'Bowen', 1: 23})); // false
+console.log(commonFunctions.isIterateeCall(23, 1, {0: 'Bowen', 1: 23, length:2})); // true
 
 
 
