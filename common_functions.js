@@ -2,6 +2,8 @@ var objectProto = Object.prototype;
 var nativeObjectToString = objectProto.toString;
 var hasOwnProperty = objectProto.hasOwnProperty;
 
+var nativeMax = Math.max;
+
 var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
 
 // Object#toString tags
@@ -10,7 +12,8 @@ var undefinedTag = '[object Undefined]',
 		funcTag = '[object Function]',
 		genTag = '[object GeneratorFunction]',
 		asyncTag = '[object AsyncFunction]',
-		proxyTag = '[object Proxy]';
+		proxyTag = '[object Proxy]'
+		symbolTag = '[object Symbol]';
 
 var reIsUint = /^(?:0|[1-9]\d*)$/;
 
@@ -139,6 +142,12 @@ var commonFunctions = {
 			return commonFunctions.eq(object[index], value);
 		}
 		return false;
+	},
+	// ++++ (ES6)
+	// Checks if `value` is classified as a `Symbol` primitive or object.
+	isSymbol: function(value) {
+		return typeof value === 'symbol' || 
+			(commonFunctions.isObjectLike(value) && commonFunctions.baseGetTag(value) == symbolTag);
 	}
 };
 
