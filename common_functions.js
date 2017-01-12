@@ -115,6 +115,12 @@ var commonFunctions = {
 		return !!length
 			&& (typeof value === 'number' || reIsUint.test(value))
 			&& (value >= 0 && value % 1 === 0 && value < length);
+	},
+	// 这个函数做的事情就是比较两个值是否相等。
+	// 这里用的严格比较。
+	// 这个将两个NaN当成相对对待。
+	eq: function(value, other) {
+		return value === other || (value !== value && other !== other);
 	}
 };
 
@@ -197,13 +203,23 @@ module.exports = commonFunctions;
 // console.log(reIsUint.test(123));
 // console.log(reIsUint.test('123'));
 
-console.log(commonFunctions.isIndex('123', 12)); // false
-console.log(commonFunctions.isIndex('123', 123)); // false
-console.log(commonFunctions.isIndex(0, 0)); // false
-console.log(commonFunctions.isIndex(0, -1)); // false
-console.log(commonFunctions.isIndex('123', 124)); // true
-console.log(commonFunctions.isIndex('123', 124.5)); // true
-console.log(commonFunctions.isIndex('123', function(){})); // true
+// console.log(commonFunctions.isIndex('123', 12)); // false
+// console.log(commonFunctions.isIndex('123', 123)); // false
+// console.log(commonFunctions.isIndex(0, 0)); // false
+// console.log(commonFunctions.isIndex(0, -1)); // false
+// console.log(commonFunctions.isIndex('123', 124)); // true
+// console.log(commonFunctions.isIndex('123', 124.5)); // true
+// console.log(commonFunctions.isIndex('123', function(){})); // true
+
+var o3 = {name: 'bowen'};
+var o4 = {name: 'bowen'};
+console.log(commonFunctions.eq(o3, o4)); // false
+console.log(commonFunctions.eq([1,2,3], [1,2,3])); // false
+console.log(commonFunctions.eq(123, '123')); // false
+console.log(commonFunctions.eq(null, null)); // true
+console.log(commonFunctions.eq(undefined, undefined)); // true
+console.log(commonFunctions.eq(NaN, NaN)); // true
+
 
 
 
