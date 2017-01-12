@@ -12,6 +12,8 @@ var undefinedTag = '[object Undefined]',
 		asyncTag = '[object AsyncFunction]',
 		proxyTag = '[object Proxy]';
 
+var reIsUint = /^(?:0|[1-9]\d*)$/;
+
 var commonFunctions = {
 	// 这个值被typeof判断为object或者function，且这个值不是null的时候，下列函数返回true，否则为false
 	// 要点：
@@ -102,6 +104,17 @@ var commonFunctions = {
 	// 4. length属性值是个合法的数组长度值
 	isArrayLikeObject: function(value) {
 		return commonFunctions.isArrayLike(value) && commonFunctions.isObjectLike(value);
+	},
+	// 下面这个函数检测index值是否是合法的array-like index.
+	// 这里和isLength函数不同的地方在于，array-like index类型可以是string。
+	isIndex: function(value, length) {
+		// 检测是否有length这个实参是否被传入，如果没有传入，那么就默认是MAX_SAFE_INTEGER。
+		// 注意，下面没有特地的对length的数据类型进行检测。而是通过value < length这个比较来限制结果。
+		// 注意，这里的对length的类型检查并不严格，对value的检查比较严格。
+		length = length == null ? Number.MAX_SAFE_INTEGER : length;
+		return !!length
+			&& (typeof value === 'number' || reIsUint.test(value))
+			&& (value >= 0 && value % 1 === 0 && value < length);
 	}
 };
 
@@ -169,17 +182,28 @@ module.exports = commonFunctions;
 // console.log(commonFunctions.isObjectLike(undefined)); // false
 // console.log(commonFunctions.isObjectLike(null)); // false
 
-console.log(commonFunctions.isArrayLikeObject(null)); // false
-console.log(commonFunctions.isArrayLikeObject(undefined)); // false
-console.log(commonFunctions.isArrayLikeObject('it is a string')); // false
-console.log(commonFunctions.isArrayLikeObject(new Date())); // false
-console.log(commonFunctions.isArrayLikeObject(function() {})); // false
-console.log(commonFunctions.isArrayLikeObject({})); // false
-console.log(commonFunctions.isArrayLikeObject({length: -1})); // false
-console.log(commonFunctions.isArrayLikeObject({length: 1.23})); // false
-console.log(commonFunctions.isArrayLikeObject({length: 0})); // true
-console.log(commonFunctions.isArrayLikeObject([])); // true
+// console.log(commonFunctions.isArrayLikeObject(null)); // false
+// console.log(commonFunctions.isArrayLikeObject(undefined)); // false
+// console.log(commonFunctions.isArrayLikeObject('it is a string')); // false
+// console.log(commonFunctions.isArrayLikeObject(new Date())); // false
+// console.log(commonFunctions.isArrayLikeObject(function() {})); // false
+// console.log(commonFunctions.isArrayLikeObject({})); // false
+// console.log(commonFunctions.isArrayLikeObject({length: -1})); // false
+// console.log(commonFunctions.isArrayLikeObject({length: 1.23})); // false
+// console.log(commonFunctions.isArrayLikeObject({length: 0})); // true
+// console.log(commonFunctions.isArrayLikeObject([])); // true
 
+
+// console.log(reIsUint.test(123));
+// console.log(reIsUint.test('123'));
+
+console.log(commonFunctions.isIndex('123', 12)); // false
+console.log(commonFunctions.isIndex('123', 123)); // false
+console.log(commonFunctions.isIndex(0, 0)); // false
+console.log(commonFunctions.isIndex(0, -1)); // false
+console.log(commonFunctions.isIndex('123', 124)); // true
+console.log(commonFunctions.isIndex('123', 124.5)); // true
+console.log(commonFunctions.isIndex('123', function(){})); // true
 
 
 
