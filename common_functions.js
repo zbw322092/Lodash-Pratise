@@ -15,7 +15,8 @@ var undefinedTag = '[object Undefined]',
 		proxyTag = '[object Proxy]'
 		symbolTag = '[object Symbol]';
 
-var reIsUint = /^(?:0|[1-9]\d*)$/;
+var reIsUint = /^(?:0|[1-9]\d*)$/
+		reIsBinary = /^0b[01]+$/i;
 
 var commonFunctions = {
 	// 这个值被typeof判断为object或者function，且这个值不是null的时候，下列函数返回true，否则为false
@@ -148,7 +149,23 @@ var commonFunctions = {
 	isSymbol: function(value) {
 		return typeof value === 'symbol' || 
 			(commonFunctions.isObjectLike(value) && commonFunctions.baseGetTag(value) == symbolTag);
+	},
+	// Convert value to number
+	toNumber: function(value) {
+		// 如果已经是number, 直接返回。
+		if (typeof value === 'number') {
+			return value;
+		}
+
+		if (commonFunctions.isSymbol(value)) {
+			return NaN;
+		}
+
+		if (commonFunctions.isObject(value)) {
+			
+		}
 	}
+
 };
 
 module.exports = commonFunctions;
