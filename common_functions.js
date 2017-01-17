@@ -15,8 +15,19 @@ var undefinedTag = '[object Undefined]',
 		proxyTag = '[object Proxy]'
 		symbolTag = '[object Symbol]';
 
+
+// RegExp
 var reIsUint = /^(?:0|[1-9]\d*)$/
 		reIsBinary = /^0b[01]+$/i;
+
+var reTrim = /^\s+|\s+$/g,
+    reTrimStart = /^\s+/,
+    reTrimEnd = /\s+$/;
+
+var reIsBinary = /^0b[01]+$/i;
+var reIsOctal = /^0o[0-7]+$/i;
+var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
 
 var commonFunctions = {
 	// 这个值被typeof判断为object或者function，且这个值不是null的时候，下列函数返回true，否则为false
