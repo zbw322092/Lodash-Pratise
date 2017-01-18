@@ -5,6 +5,11 @@ var hasOwnProperty = objectProto.hasOwnProperty;
 var nativeMax = Math.max;
 
 var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
+//这里和官方的写法不一样。加入了Array.isArray方法是否存在的检查。
+var isArray = function(value) {
+	return Array.isArray ? Array.isArray(value) : Object.prototype.toString(value) === '[object Array]';
+};
+
 
 // Object#toString tags
 var undefinedTag = '[object Undefined]',
@@ -17,16 +22,21 @@ var undefinedTag = '[object Undefined]',
 
 
 // RegExp
-var reIsUint = /^(?:0|[1-9]\d*)$/
-		reIsBinary = /^0b[01]+$/i;
+var reIsUint = /^(?:0|[1-9]\d*)$/;
 
 var reTrim = /^\s+|\s+$/g,
     reTrimStart = /^\s+/,
     reTrimEnd = /\s+$/;
 
-var reIsBinary = /^0b[01]+$/i;
-var reIsOctal = /^0o[0-7]+$/i;
-var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+var reIsBinary = /^0b[01]+$/i,
+		reIsOctal = /^0o[0-7]+$/i,
+		reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
+// Used to match property names within property paths.
+var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,
+    reIsPlainProp = /^\w*$/,
+    reLeadingDot = /^\./,
+    rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
 
 
 var commonFunctions = {
@@ -175,7 +185,31 @@ var commonFunctions = {
 		if (commonFunctions.isObject(value)) {
 			
 		}
+	},
+
+	// 
+	parseInt: function(string, radix, guard) {
+		// if (guard)
+	},
+	arrayMap: function(array, iteratee) {
+
+	},
+	// Checks if `value` is a property name and not a property path.
+	isKey: function(value, object) {
+		if (isArray(value)) {
+			return false;
+		}
+
+		var type = typeof value;
+		if (type === 'number' || type === 'symbol' || type === 'boolean' || 
+			value == null || commonFunctions.isSymbol(value)) {
+			return true;
+		}
+		return reIsPlainProp.test(value) || !reIsDeepProp.test(value) ||
+			(object != null && value in Object(object));
 	}
+
+
 
 };
 
@@ -275,10 +309,19 @@ module.exports = commonFunctions;
 // console.log(commonFunctions.eq(undefined, undefined)); // true
 // console.log(commonFunctions.eq(NaN, NaN)); // true
 
-console.log(commonFunctions.isIterateeCall(23, 'age', {name: 'Bowen', age: 23})); // true
-console.log(commonFunctions.isIterateeCall(23, 'name', {name: 'Bowen', age: 23})); // false
-console.log(commonFunctions.isIterateeCall(23, 1, {0: 'Bowen', 1: 23})); // false
-console.log(commonFunctions.isIterateeCall(23, 1, {0: 'Bowen', 1: 23, length:2})); // true
+// console.log(commonFunctions.isIterateeCall(23, 'age', {name: 'Bowen', age: 23})); // true
+// console.log(commonFunctions.isIterateeCall(23, 'name', {name: 'Bowen', age: 23})); // false
+// console.log(commonFunctions.isIterateeCall(23, 1, {0: 'Bowen', 1: 23})); // false
+// console.log(commonFunctions.isIterateeCall(23, 1, {0: 'Bowen', 1: 23, length:2})); // true
+
+console.log(commonFunctions.isKey('name')); // true
+console.log(commonFunctions.isKey(true)); // true
+console.log(commonFunctions.isKey(123)); // true
+console.log(commonFunctions.isKey(null)); // true
+console.log(commonFunctions.isKey('name   age')); // true
+console.log(commonFunctions.isKey('name.age', {"name.age": 123})); // true
+console.log(commonFunctions.isKey('name.age')); // false
+
 
 
 
