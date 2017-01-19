@@ -227,7 +227,20 @@ var commonFunctions = {
 			return object[key] === srcValue &&
 				(srcValue !== undefined || (key in Object(object)));
 		}
+	},
+	// A specialized version of `_.some` for arrays without support for iteratee
+	arraySome: function(array, predicate) {
+		var index = -1,
+			length = array == null ? 0 : array.length;
+
+		while (++index < length) {
+			if (predicate(array[index], index, array)) {
+				return true;
+			}
+		}
+		return false;
 	}
+
 
 
 
@@ -353,12 +366,19 @@ module.exports = commonFunctions;
 // console.log(commonFunctions.isStrictComparable(new Date())); // false
 // console.log(commonFunctions.isStrictComparable(NaN)); // false
 
-console.log(commonFunctions.matchesStrictComparable('name', 'bowen')({name: 'bowen', age: 12})); // true
-console.log(commonFunctions.matchesStrictComparable('name', 'bowen')({name: 'bowen2', age: 12})); // false
-console.log(commonFunctions.matchesStrictComparable('name')({name: 'bowen2', age: 12})); // false
-console.log(commonFunctions.matchesStrictComparable('name')({name: undefined, age: 12})); // true
+// console.log(commonFunctions.matchesStrictComparable('name', 'bowen')({name: 'bowen', age: 12})); // true
+// console.log(commonFunctions.matchesStrictComparable('name', 'bowen')({name: 'bowen2', age: 12})); // false
+// console.log(commonFunctions.matchesStrictComparable('name')({name: 'bowen2', age: 12})); // false
+// console.log(commonFunctions.matchesStrictComparable('name')({name: undefined, age: 12})); // true
 
-
+console.log(commonFunctions.arraySome([1,2,3], function(value, key, array) {return value === 1})); // true
+console.log(commonFunctions.arraySome([1,2,3], function(value, key, array) {return value === 12})); // false
+console.log(commonFunctions.arraySome([1,2,3], function() {return false})); // false
+console.log(commonFunctions.arraySome([1,2,3], function() {return true})); // true
+console.log(commonFunctions.arraySome({name: 'Bowen', age: 12}, function(value, key, array) {return value === 'Bowen'})); // false
+console.log(commonFunctions.arraySome({1: 'Bowen', 2: 12}, function(value, key, array) {return value === 'Bowen'})); // false
+console.log(commonFunctions.arraySome({1: 'Bowen', 2: 12, length: 2}, function(value, key, array) {return value === 'Bowen'})); // true
+console.log(commonFunctions.arraySome(undefined, function(value, key, array) {return value === 'Bowen'})); // false
 
 
 
