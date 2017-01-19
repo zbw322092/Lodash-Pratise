@@ -5,10 +5,9 @@ var hasOwnProperty = objectProto.hasOwnProperty;
 var nativeMax = Math.max;
 
 var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
-//这里和官方的写法不一样。加入了Array.isArray方法是否存在的检查。
-var isArray = function(value) {
-	return Array.isArray ? Array.isArray(value) : Object.prototype.toString(value) === '[object Array]';
-};
+
+var COMPARE_PARTIAL_FLAG = 1,
+    COMPARE_UNORDERED_FLAG = 2;
 
 
 // Object#toString tags
@@ -38,6 +37,19 @@ var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,
     reLeadingDot = /^\./,
     rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
 
+
+// constructors
+// Creates a map cache object to store key-value pairs.
+function MapCache (entries) {
+	var index = -1,
+		length = entries == null ? 0 : entries.length;
+
+	this.clear();
+	while (++index < length) {
+		var entry = entries[index];
+		this.set(entry[0], entry[1]);
+	}
+}
 
 var commonFunctions = {
 	// 这个值被typeof判断为object或者function，且这个值不是null的时候，下列函数返回true，否则为false
@@ -186,7 +198,10 @@ var commonFunctions = {
 			
 		}
 	},
-
+	//这里和官方的写法不一样。加入了Array.isArray方法是否存在的检查。
+	isArray: function(value) {
+		return Array.isArray ? Array.isArray(value) : Object.prototype.toString(value) === '[object Array]';
+	},
 	// 
 	parseInt: function(string, radix, guard) {
 		// if (guard)
@@ -198,7 +213,7 @@ var commonFunctions = {
 	// Checks if `value` is a property name and not a property path.
 	// 即使单个元素的数组可以作为元素名（会被转化成string），这个还是排除了这种情况。
 	isKey: function(value, object) {
-		if (isArray(value)) {
+		if (commonFunctions.isArray(value)) {
 			return false;
 		}
 
@@ -371,15 +386,22 @@ module.exports = commonFunctions;
 // console.log(commonFunctions.matchesStrictComparable('name')({name: 'bowen2', age: 12})); // false
 // console.log(commonFunctions.matchesStrictComparable('name')({name: undefined, age: 12})); // true
 
-console.log(commonFunctions.arraySome([1,2,3], function(value, key, array) {return value === 1})); // true
-console.log(commonFunctions.arraySome([1,2,3], function(value, key, array) {return value === 12})); // false
-console.log(commonFunctions.arraySome([1,2,3], function() {return false})); // false
-console.log(commonFunctions.arraySome([1,2,3], function() {return true})); // true
-console.log(commonFunctions.arraySome({name: 'Bowen', age: 12}, function(value, key, array) {return value === 'Bowen'})); // false
-console.log(commonFunctions.arraySome({1: 'Bowen', 2: 12}, function(value, key, array) {return value === 'Bowen'})); // false
-console.log(commonFunctions.arraySome({1: 'Bowen', 2: 12, length: 2}, function(value, key, array) {return value === 'Bowen'})); // true
-console.log(commonFunctions.arraySome(undefined, function(value, key, array) {return value === 'Bowen'})); // false
+// console.log(commonFunctions.arraySome([1,2,3], function(value, key, array) {return value === 1})); // true
+// console.log(commonFunctions.arraySome([1,2,3], function(value, key, array) {return value === 12})); // false
+// console.log(commonFunctions.arraySome([1,2,3], function() {return false})); // false
+// console.log(commonFunctions.arraySome([1,2,3], function() {return true})); // true
+// console.log(commonFunctions.arraySome({name: 'Bowen', age: 12}, function(value, key, array) {return value === 'Bowen'})); // false
+// console.log(commonFunctions.arraySome({1: 'Bowen', 2: 12}, function(value, key, array) {return value === 'Bowen'})); // false
+// console.log(commonFunctions.arraySome({1: 'Bowen', 2: 12, length: 2}, function(value, key, array) {return value === 'Bowen'})); // true
+// console.log(commonFunctions.arraySome(undefined, function(value, key, array) {return value === 'Bowen'})); // false
 
+var a = new Map();
+var i = [
+	['name', 'Bowen'],
+	['age', 24]
+];
+MapCache.call(a, i);
+console.log(a);
 
 
 
