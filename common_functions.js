@@ -194,7 +194,9 @@ var commonFunctions = {
 	arrayMap: function(array, iteratee) {
 
 	},
+	// ++++(RegExp)
 	// Checks if `value` is a property name and not a property path.
+	// 即使单个元素的数组可以作为元素名（会被转化成string），这个还是排除了这种情况。
 	isKey: function(value, object) {
 		if (isArray(value)) {
 			return false;
@@ -207,6 +209,11 @@ var commonFunctions = {
 		}
 		return reIsPlainProp.test(value) || !reIsDeepProp.test(value) ||
 			(object != null && value in Object(object));
+	},
+	// Checks if `value` is suitable for strict equality comparisons, i.e. `===`.
+	// 这里排除了对象的情况，认为两个对象在严格模式下不相等。
+	isStrictComparable: function(value) {
+		return value === value && !commonFunctions.isObject(value);
 	}
 
 
@@ -314,15 +321,24 @@ module.exports = commonFunctions;
 // console.log(commonFunctions.isIterateeCall(23, 1, {0: 'Bowen', 1: 23})); // false
 // console.log(commonFunctions.isIterateeCall(23, 1, {0: 'Bowen', 1: 23, length:2})); // true
 
-console.log(commonFunctions.isKey('name')); // true
-console.log(commonFunctions.isKey(true)); // true
-console.log(commonFunctions.isKey(123)); // true
-console.log(commonFunctions.isKey(null)); // true
-console.log(commonFunctions.isKey('name   age')); // true
-console.log(commonFunctions.isKey('name.age', {"name.age": 123})); // true
-console.log(commonFunctions.isKey('name.age')); // false
+// console.log(commonFunctions.isKey('name')); // true
+// console.log(commonFunctions.isKey(true)); // true
+// console.log(commonFunctions.isKey(123)); // true
+// console.log(commonFunctions.isKey(null)); // true
+// console.log(commonFunctions.isKey('name   age')); // true
+// console.log(commonFunctions.isKey('name.age', {"name.age": 123})); // true
+// console.log(commonFunctions.isKey('name.age')); // false
 
-
+console.log(commonFunctions.isStrictComparable('it is a string')); // true
+console.log(commonFunctions.isStrictComparable(false)); // true
+console.log(commonFunctions.isStrictComparable(undefined)); // true
+console.log(commonFunctions.isStrictComparable(null)); // true
+console.log(commonFunctions.isStrictComparable({})); // false
+console.log(commonFunctions.isStrictComparable({name: 'Bowen'})); // false
+console.log(commonFunctions.isStrictComparable([])); // false
+console.log(commonFunctions.isStrictComparable([1,2,3])); // false
+console.log(commonFunctions.isStrictComparable(new Date())); // false
+console.log(commonFunctions.isStrictComparable(NaN)); // false
 
 
 
