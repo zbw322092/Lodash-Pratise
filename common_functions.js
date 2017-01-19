@@ -214,6 +214,19 @@ var commonFunctions = {
 	// 这里排除了对象的情况，认为两个对象在严格模式下不相等。
 	isStrictComparable: function(value) {
 		return value === value && !commonFunctions.isObject(value);
+	},
+	matchesStrictComparable: function(key, srcValue) {
+		return function(object) {
+			if (object == null) {
+				return false;
+			}
+			// 如果只是下面这样判断的话，当对象的key属性不存在，然后srcValue没传或者传入undefined的时候，也会
+			// 返回true。并且，如果形参object最终传入的是一个原始值，object[key]大多数时候也会是undefined。
+			// 然后我们想排除上面这些情况
+			// return object[key] === srcValue
+			return object[key] === srcValue &&
+				(srcValue !== undefined || (key in Object(object)));
+		}
 	}
 
 
@@ -329,18 +342,21 @@ module.exports = commonFunctions;
 // console.log(commonFunctions.isKey('name.age', {"name.age": 123})); // true
 // console.log(commonFunctions.isKey('name.age')); // false
 
-console.log(commonFunctions.isStrictComparable('it is a string')); // true
-console.log(commonFunctions.isStrictComparable(false)); // true
-console.log(commonFunctions.isStrictComparable(undefined)); // true
-console.log(commonFunctions.isStrictComparable(null)); // true
-console.log(commonFunctions.isStrictComparable({})); // false
-console.log(commonFunctions.isStrictComparable({name: 'Bowen'})); // false
-console.log(commonFunctions.isStrictComparable([])); // false
-console.log(commonFunctions.isStrictComparable([1,2,3])); // false
-console.log(commonFunctions.isStrictComparable(new Date())); // false
-console.log(commonFunctions.isStrictComparable(NaN)); // false
+// console.log(commonFunctions.isStrictComparable('it is a string')); // true
+// console.log(commonFunctions.isStrictComparable(false)); // true
+// console.log(commonFunctions.isStrictComparable(undefined)); // true
+// console.log(commonFunctions.isStrictComparable(null)); // true
+// console.log(commonFunctions.isStrictComparable({})); // false
+// console.log(commonFunctions.isStrictComparable({name: 'Bowen'})); // false
+// console.log(commonFunctions.isStrictComparable([])); // false
+// console.log(commonFunctions.isStrictComparable([1,2,3])); // false
+// console.log(commonFunctions.isStrictComparable(new Date())); // false
+// console.log(commonFunctions.isStrictComparable(NaN)); // false
 
-
+console.log(commonFunctions.matchesStrictComparable('name', 'bowen')({name: 'bowen', age: 12})); // true
+console.log(commonFunctions.matchesStrictComparable('name', 'bowen')({name: 'bowen2', age: 12})); // false
+console.log(commonFunctions.matchesStrictComparable('name')({name: 'bowen2', age: 12})); // false
+console.log(commonFunctions.matchesStrictComparable('name')({name: undefined, age: 12})); // true
 
 
 
