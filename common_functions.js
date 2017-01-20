@@ -51,6 +51,17 @@ function MapCache (entries) {
 	}
 }
 
+// Creates an array cache object to store unique values.
+function SetCache (values) {
+	var index = -1,
+		length = values == null ? 0 : values.length;
+
+	this.__data__ = new MapCache;
+	while (++index < length) {
+		this.add(values[index]);
+	}
+}
+
 var commonFunctions = {
 	// 这个值被typeof判断为object或者function，且这个值不是null的时候，下列函数返回true，否则为false
 	// 要点：
@@ -395,13 +406,13 @@ module.exports = commonFunctions;
 // console.log(commonFunctions.arraySome({1: 'Bowen', 2: 12, length: 2}, function(value, key, array) {return value === 'Bowen'})); // true
 // console.log(commonFunctions.arraySome(undefined, function(value, key, array) {return value === 'Bowen'})); // false
 
-var a = new Map();
-var i = [
-	['name', 'Bowen'],
-	['age', 24]
-];
-MapCache.call(a, i);
-console.log(a);
+// var a = new Map();
+// var i = [
+// 	['name', 'Bowen'],
+// 	['age', 24]
+// ];
+// MapCache.call(a, i);
+// console.log(a);
 
 
 
