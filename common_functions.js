@@ -356,8 +356,14 @@ var commonFunctions = {
 			array[offset + index] = values[index];
 		}
 		return array;
-	}
+	},
 
+	//The base implementation of `getAllKeys` and `getAllKeysIn` which uses
+  // `keysFunc` and `symbolsFunc` to get the enumerable property names and symbols of `object`.
+  baseGetAllKeys: function (object, keysFunc, symbolsFunc) {
+  	var result = keysFunc(object);
+  	return commonFunctions.isArray(object) ? result : arrayPush(result, symbolsFunc(object));
+  }
 
 
 
