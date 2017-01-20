@@ -1,6 +1,7 @@
 var objectProto = Object.prototype;
 var nativeObjectToString = objectProto.toString;
-var hasOwnProperty = objectProto.hasOwnProperty;
+var hasOwnProperty = objectProto.hasOwnProperty,
+		propertyIsEnumerable = objectProto.propertyIsEnumerable;
 
 var nativeMax = Math.max;
 
@@ -372,7 +373,18 @@ var commonFunctions = {
   // The base implementation of `_.isArguments`.
   baseIsArguments: function (value) {
   	return commonFunctions.isObjectLike(value) && commonFunctions.baseGetTag(value) === argsTag;
+  },
+  // Checks if `value` is likely an `arguments` object.
+  // 第二种情况中，"手动的判断是否是arguments"要做的判断是：value是object, 这个object自身有callee属性，这个callee属性是不可枚举的
+  isArguments: function () {
+  	return commonFunctions.baseIsArguments(function() { return arguments; }()) ? 
+  		commonFunctions.baseIsArguments : 
+  		function(value) {
+      return commonFunctions.isObjectLike(value) && hasOwnProperty.call(value, 'callee') &&
+      	!propertyIsEnumerable.call(value, 'callee');
+      }
   }
+
 
 
 
@@ -523,14 +535,18 @@ module.exports = commonFunctions;
 
 // console.log(commonFunctions.equalArrays([1,2,3], [1,2,3], undefined,undefined,undefined,new Map())); // true
 
-console.log(commonFunctions.arrayPush([1,2,3], [4,5,6])); // [ 1, 2, 3, 4, 5, 6 ]
-console.log(commonFunctions.arrayPush([], [])); // []
-console.log(commonFunctions.arrayPush(function(){}, [1,2,3])); // { [Function] '0': 1, '1': 2, '2': 3 }
-console.log(commonFunctions.arrayPush({name: 'Bowen'}, [1,2,3,4])); // { name: 'Bowen', NaN: 4 } 
-// 上面的例子之所以是这个结果，是因为object的length是undefined，那么在和数字相加的时候返回了NaN
-// console.log(commonFunctions.arrayPush(undefined, [1,2,3,4])); // 报错
-// console.log(commonFunctions.arrayPush(null, [1,2,3,4])); // 报错
-console.log(commonFunctions.arrayPush('string', [1,2,3,4])); // string 没有变化。因为wrapper object的用完即时销毁的属性
+// console.log(commonFunctions.arrayPush([1,2,3], [4,5,6])); // [ 1, 2, 3, 4, 5, 6 ]
+// console.log(commonFunctions.arrayPush([], [])); // []
+// console.log(commonFunctions.arrayPush(function(){}, [1,2,3])); // { [Function] '0': 1, '1': 2, '2': 3 }
+// console.log(commonFunctions.arrayPush({name: 'Bowen'}, [1,2,3,4])); // { name: 'Bowen', NaN: 4 } 
+// // 上面的例子之所以是这个结果，是因为object的length是undefined，那么在和数字相加的时候返回了NaN
+// // console.log(commonFunctions.arrayPush(undefined, [1,2,3,4])); // 报错
+// // console.log(commonFunctions.arrayPush(null, [1,2,3,4])); // 报错
+// console.log(commonFunctions.arrayPush('string', [1,2,3,4])); // string 没有变化。因为wrapper object的用完即时销毁的属性
+
+// console.log(commonFunctions.baseIsArguments(function() { return arguments; }())); // true
+
+console.log(commonFunctions.isArguments());
 
 
 
