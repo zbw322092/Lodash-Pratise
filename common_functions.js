@@ -314,15 +314,26 @@ var commonFunctions = {
 			// Recursively compare arrays (susceptible to call stack limits).
 			if (seen) {
 				if (!arraySome(other, function(othValue, othIndex) {
-					
-				}))
+					if (!cacheHas(seen, othIndex) &&
+						(arrValue === othValue || equalFunc(arrValue, othValue, bitmask, customizer, stack))) {
+						return seen.push(othIndex);
+					}
+				})) {
+					result = false;
+					break;
+				}
+			} else if (!(
+					arrValue === othValue ||
+						equalFunc(arrValue, othValue, bitmask, customizer, stack)
+				)) {
+				result = false;
+				break;
 			}
-
 		}
 
-
-
-
+		stack['delete'](array);
+		stack['delete'](other);
+		return result;
 	},
 
 	// Checks if a `cache` value for `key` exists.
