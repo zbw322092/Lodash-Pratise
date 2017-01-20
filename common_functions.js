@@ -79,17 +79,17 @@ var commonFunctions = {
 	// 4. 小于等于2^53-1
 	// 
 	// 这里要做类型检查的原因在于，我们如果传入一个空的字符串，下列的检查结果都会是true。
-	isLength: function(value) {
+	isLength: function (value) {
 		return typeof value === "number" && 
 			value % 1 === 0 && value >= 0 && value <= Number.MAX_SAFE_INTEGER;
 	},
 	// 通过调用Object原型中的toString方法来生成一个string，我们可以从这个string中获得类的信息。
-	objectToString: function(value) {
+	objectToString: function (value) {
 		return nativeObjectToString.call(value);
 	},
 	// ++++
 	// A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values
-	getRawTag: function(value) {
+	getRawTag: function (value) {
 		var isOwn = hasOwnProperty.call(value, symToStringTag),
 			tag = value[symToStringTag];
 
@@ -107,7 +107,7 @@ var commonFunctions = {
 		return result;
 	},
 	// The base implementation of `getTag` without fallbacks for buggy environments.
-	baseGetTag: function(value) {
+	baseGetTag: function (value) {
 		// 给undefined和null类型定义两个单独的tags
 		if (value == null) {
 			return value === undefined ? undefinedTag : nullTag;
@@ -118,7 +118,7 @@ var commonFunctions = {
 	},
 	// 这里主要用到了Object.prototype.toString.call()的判断方式。
 	// 下面列举了四种在Object.prototype.toString.call()中的值可以被判断为funcion
-	isFunction: function(value) {
+	isFunction: function (value) {
 		// 不确定这个判断是否多余。
 		if (!commonFunctions.isObject(value)) {
 			return false;
@@ -135,14 +135,14 @@ var commonFunctions = {
 	// 这样子string也会被判为true。
 	// 注意，这里先排除了这个value值不能是undefined或者null，因为试图取这两个值的length属性时会报错，
 	// 而其他类型的值取length属性值的时候即使不存在也只是会返回undefined
-	isArrayLike: function(value) {
+	isArrayLike: function (value) {
 		return value != null && commonFunctions.isLength(value.length)
 			&& !commonFunctions.isFunction(value);
 	},
 	// 这里定义的isObjectLike很宽松，只要满足两个条件：
 	// 不是null
 	// typeof返回object
-	isObjectLike: function(value) {
+	isObjectLike: function (value) {
 		return value !== null && typeof value === 'object';
 	},
 	// 这个方法就是在isArrayLike的基础上进一步规定tyeof值是object。总结起来
@@ -150,12 +150,12 @@ var commonFunctions = {
 	// 2. 在此基础上排除掉null
 	// 3. 有length属性
 	// 4. length属性值是个合法的数组长度值
-	isArrayLikeObject: function(value) {
+	isArrayLikeObject: function (value) {
 		return commonFunctions.isArrayLike(value) && commonFunctions.isObjectLike(value);
 	},
 	// 下面这个函数检测index值是否是合法的array-like index.
 	// 这里和isLength函数不同的地方在于，array-like index类型可以是string。
-	isIndex: function(value, length) {
+	isIndex: function (value, length) {
 		// 检测是否有length这个实参是否被传入，如果没有传入，那么就默认是MAX_SAFE_INTEGER。
 		// 注意，下面没有特地的对length的数据类型进行检测。而是通过value < length这个比较来限制结果。
 		// 注意，这里的对length的类型检查并不严格，对value的检查比较严格。
@@ -167,11 +167,11 @@ var commonFunctions = {
 	// 这个函数做的事情就是比较两个值是否相等。
 	// 这里用的严格比较。
 	// 这个将两个NaN当成相对对待。
-	eq: function(value, other) {
+	eq: function (value, other) {
 		return value === other || (value !== value && other !== other);
 	},
 	// Check if the given arguments are from an iteratee call
-	isIterateeCall: function(value, index, object) {
+	isIterateeCall: function (value, index, object) {
 		// 如果实参object不是object，直接返回false
 		if(!commonFunctions.isObject(object)) {
 			return false;
@@ -190,12 +190,12 @@ var commonFunctions = {
 	},
 	// ++++ (ES6)
 	// Checks if `value` is classified as a `Symbol` primitive or object.
-	isSymbol: function(value) {
+	isSymbol: function (value) {
 		return typeof value === 'symbol' || 
 			(commonFunctions.isObjectLike(value) && commonFunctions.baseGetTag(value) == symbolTag);
 	},
 	// Convert value to number
-	toNumber: function(value) {
+	toNumber: function (value) {
 		// 如果已经是number, 直接返回。
 		if (typeof value === 'number') {
 			return value;
@@ -210,20 +210,20 @@ var commonFunctions = {
 		}
 	},
 	//这里和官方的写法不一样。加入了Array.isArray方法是否存在的检查。
-	isArray: function(value) {
+	isArray: function (value) {
 		return Array.isArray ? Array.isArray(value) : Object.prototype.toString(value) === '[object Array]';
 	},
 	// 
-	parseInt: function(string, radix, guard) {
+	parseInt: function (string, radix, guard) {
 		// if (guard)
 	},
-	arrayMap: function(array, iteratee) {
+	arrayMap: function (array, iteratee) {
 
 	},
 	// ++++(RegExp)
 	// Checks if `value` is a property name and not a property path.
 	// 即使单个元素的数组可以作为元素名（会被转化成string），这个还是排除了这种情况。
-	isKey: function(value, object) {
+	isKey: function (value, object) {
 		if (commonFunctions.isArray(value)) {
 			return false;
 		}
@@ -238,10 +238,10 @@ var commonFunctions = {
 	},
 	// Checks if `value` is suitable for strict equality comparisons, i.e. `===`.
 	// 这里排除了对象的情况，认为两个对象在严格模式下不相等。
-	isStrictComparable: function(value) {
+	isStrictComparable: function (value) {
 		return value === value && !commonFunctions.isObject(value);
 	},
-	matchesStrictComparable: function(key, srcValue) {
+	matchesStrictComparable: function (key, srcValue) {
 		return function(object) {
 			if (object == null) {
 				return false;
@@ -255,7 +255,7 @@ var commonFunctions = {
 		}
 	},
 	// A specialized version of `_.some` for arrays without support for iteratee
-	arraySome: function(array, predicate) {
+	arraySome: function (array, predicate) {
 		var index = -1,
 			length = array == null ? 0 : array.length;
 
@@ -265,6 +265,71 @@ var commonFunctions = {
 			}
 		}
 		return false;
+	},
+	equalArrays: function (array, other, bitmask, customizer, equalFunc, stack) {
+		var isPartial = bitmask & COMPARE_PARTIAL_FLAG,
+			arrLength = array.length,
+			othLength = other.length;
+
+		// 这里通过array的长度来首先排除一些不相等的数组。
+		// 会被判为不相等需要满足下面的条件：
+		// 不是部分比较，并且arrLength != othLength，或者是部分比较，并且othLength > arrLength
+		// 按照上面的逻辑写出来的判断大概像下面这样：
+		// (!isPartial && arrLength !== othLength) || (isPartial && othLength > arrLength)
+		// 然而官方的代码不是这么写的，官方写法逻辑是排除的逻辑：
+		// 所有两个长度不一样的数组都不相等，除了isPartial && (othLength <= arrLength)的时候。
+		if (arrLength !== othLength && !(isPartial && othLength > arrLength)) {
+			return false;
+		}
+
+		// Assume cyclic values are equal.
+		var stacked = stack.get(array);
+		if (stacked && stack.get(other)) {
+			return stacked == other;
+		}
+
+		var index = -1,
+			result = true,
+			seen = (bitmask & COMPARE_UNORDERED_FLAG) ? new SetCache : undefined;
+
+		stack.set(array, other);
+		stack.set(other, array);
+
+		while (++index < arrLength) {
+			var arrValue = array[index]
+					othValue = other[index];
+
+			if (customizer) {
+				var compared = isPartial
+					? customizer(othValue, arrValue, index, other, array, stack)
+					: customizer(arrValue, othValue, index, array, other, stack);
+			}
+			if (compared !== undefined) {
+				if (compared) {
+					continue;
+				}
+				result = false;
+				break;
+			}
+			// Recursively compare arrays (susceptible to call stack limits).
+			if (seen) {
+				if (!arraySome(other, function(othValue, othIndex) {
+					
+				}))
+			}
+
+		}
+
+
+
+
+	},
+
+	// Checks if a `cache` value for `key` exists.
+	cacheHas: function (cache, key) {
+		// 这里没有对cache和key做任何的类型检测，这个工作交给js引擎自己去处理了。比如传入一个没有has方法的
+		// object，会自动的报错。
+		return cache.has(key);
 	}
 
 
