@@ -11,7 +11,8 @@ var COMPARE_PARTIAL_FLAG = 1,
 
 
 // Object#toString tags
-var undefinedTag = '[object Undefined]',
+var argsTag = '[object Arguments]',
+		undefinedTag = '[object Undefined]',
 		nullTag = '[object Null]',
 		funcTag = '[object Function]',
 		genTag = '[object GeneratorFunction]',
@@ -363,7 +364,16 @@ var commonFunctions = {
   baseGetAllKeys: function (object, keysFunc, symbolsFunc) {
   	var result = keysFunc(object);
   	return commonFunctions.isArray(object) ? result : arrayPush(result, symbolsFunc(object));
+  },
+  // Creates an array of the enumerable property names of the array-like `value`.
+  arrayLikeKeys: function(){
+
+  },
+  // The base implementation of `_.isArguments`.
+  baseIsArguments: function (value) {
+  	return commonFunctions.isObjectLike(value) && commonFunctions.baseGetTag(value) === argsTag;
   }
+
 
 
 
