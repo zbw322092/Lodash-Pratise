@@ -39,6 +39,12 @@ var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,
     reLeadingDot = /^\./,
     rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
 
+// var moduleExports = 
+// var freeModule = 
+// Detect free variable `exports`.
+var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
+
+
 
 // constructors
 // Creates a map cache object to store key-value pairs.
@@ -546,8 +552,9 @@ module.exports = commonFunctions;
 
 // console.log(commonFunctions.baseIsArguments(function() { return arguments; }())); // true
 
-console.log(commonFunctions.isArguments());
+// console.log(commonFunctions.isArguments());
 
+console.log(freeExports); // {}
 
 
 
