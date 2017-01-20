@@ -341,6 +341,21 @@ var commonFunctions = {
 		// 这里没有对cache和key做任何的类型检测，这个工作交给js引擎自己去处理了。比如传入一个没有has方法的
 		// object，会自动的报错。
 		return cache.has(key);
+	},
+
+	// Appends the elements of `values` to `array`.
+	// 这个函数要做的基本上就是Array的concat()方法做的事情。
+	arrayPush: function (array, values) {
+		var index = -1,
+			valueLength = values.length,
+			offset = array.length;
+
+		while (++index < valueLength) {
+			// 这个方法在array是数组的情况下使用没问题，但是不是array的话会报错。官方的代码中用的是一个更笨但是更保险的方法。
+			// array.push(values[index]);
+			array[offset + index] = values[index];
+		}
+		return array;
 	}
 
 
@@ -489,6 +504,19 @@ module.exports = commonFunctions;
 // ];
 // MapCache.call(a, i);
 // console.log(a);
+
+// console.log(commonFunctions.equalArrays([1,2,3], [1,2,3], undefined,undefined,undefined,new Map())); // true
+
+console.log(commonFunctions.arrayPush([1,2,3], [4,5,6])); // [ 1, 2, 3, 4, 5, 6 ]
+console.log(commonFunctions.arrayPush([], [])); // []
+console.log(commonFunctions.arrayPush(function(){}, [1,2,3])); // { [Function] '0': 1, '1': 2, '2': 3 }
+console.log(commonFunctions.arrayPush({name: 'Bowen'}, [1,2,3,4])); // { name: 'Bowen', NaN: 4 } 
+// 上面的例子之所以是这个结果，是因为object的length是undefined，那么在和数字相加的时候返回了NaN
+// console.log(commonFunctions.arrayPush(undefined, [1,2,3,4])); // 报错
+// console.log(commonFunctions.arrayPush(null, [1,2,3,4])); // 报错
+console.log(commonFunctions.arrayPush('string', [1,2,3,4])); // string 没有变化。因为wrapper object的用完即时销毁的属性
+
+
 
 
 
