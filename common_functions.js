@@ -60,6 +60,20 @@ var Buffer = moduleExports ? root.Buffer : undefined;
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined;
 
+/** Detect free variable `process` from Node.js. */
+var freeProcess = moduleExports && freeGlobal.process;
+
+/** Used to access faster Node.js helpers. */
+// process.binding的作用就是get access to various C++ bindings. 类似于node中的require
+// node中的util模块起初是为了node内部的API设计的，但是它定义的一系列方法对应用的开发也很有用，所以我们可以使用它。
+var nodeUtil = (function() {
+	try {
+		return freeProcess && freeProcess.binding && freeProcess.binding('util');
+	} catch (e) {}
+}());
+
+/* Node.js helper references. */
+// var nodeIsTypedArray = 
 
 // constructors
 // Creates a map cache object to store key-value pairs.
@@ -583,7 +597,9 @@ module.exports = commonFunctions;
 
 // console.log(root); // {}
 
-console.log(commonFunctions.isBuffer());
+// console.log(commonFunctions.isBuffer());
+
+console.log(nodeUtil);
 
 
 
