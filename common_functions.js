@@ -3,9 +3,11 @@ var nativeObjectToString = objectProto.toString;
 var hasOwnProperty = objectProto.hasOwnProperty,
     propertyIsEnumerable = objectProto.propertyIsEnumerable;
 
-var nativeMax = Math.max;
-
 var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
+
+/** Error message constants. */
+var CORE_ERROR_TEXT = 'Unsupported core-js use. Try https://npms.io/search?q=ponyfill.',
+    FUNC_ERROR_TEXT = 'Expected a function';
 
 var COMPARE_PARTIAL_FLAG = 1,
     COMPARE_UNORDERED_FLAG = 2;
@@ -14,6 +16,9 @@ var COMPARE_PARTIAL_FLAG = 1,
 var CLONE_DEEP_FLAG = 1,
     CLONE_FLAT_FLAG = 2,
     CLONE_SYMBOLS_FLAG = 4;
+
+
+var nativeMax = Math.max;
 
 /** Used as references for various `Number` constants. */
 // ++++ （为什么不直接使用Infinity而要这样自己定义一番）
@@ -509,6 +514,14 @@ function toKey (value) {
 	// ++++ 暂时不明确为什么官方的写法中要使用下面的括号
 	var result = (value + '');
 	return (value === 0 && (1 / value) === -INFINITY) ? '-0' : result;
+}
+
+function memoize (func, resolver) {
+	if (typeof func != 'function' || (resolver != undefined && typeof resolver != 'function')) {
+		return new TypeError(FUNC_ERROR_TEXT);
+	}
+
+	
 }
 
 
