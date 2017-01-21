@@ -10,6 +10,18 @@ var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
 var COMPARE_PARTIAL_FLAG = 1,
     COMPARE_UNORDERED_FLAG = 2;
 
+/** Used to compose bitmasks for cloning. */
+var CLONE_DEEP_FLAG = 1,
+    CLONE_FLAT_FLAG = 2,
+    CLONE_SYMBOLS_FLAG = 4;
+
+/** Used as references for various `Number` constants. */
+// ++++ （为什么不直接使用Infinity而要这样自己定义一番）
+var INFINITY = 1 / 0,
+    MAX_SAFE_INTEGER = 9007199254740991,
+    MAX_INTEGER = 1.7976931348623157e+308,
+    NAN = 0 / 0;
+
 
 // Object#toString tags
 var argsTag = '[object Arguments]',
@@ -147,6 +159,7 @@ function SetCache(values) {
     }
 }
 
+// ++++(暂时不明白这个函数这么做的优越性在哪里)
 // The base implementation of `_.unary` without support for storing metadata.
 function baseUnary(func) {
     return function(value) {
@@ -163,7 +176,6 @@ function baseUnary(func) {
 function baseIsTypedArray (value) {
 	return isObjectLike(value) && isLength(value.length) && !!typedArrayTags[baseGetTag(value)]
 }
-
 
 // 这个值被typeof判断为object或者function，且这个值不是null的时候，下列函数返回true，否则为false
 // 要点：
@@ -483,8 +495,22 @@ function stubFalse() {
     return false;
 }
 function isBuffer() {
-    return nativeIsBuffer || stubFalse;
+  return nativeIsBuffer || stubFalse;
 }
+// Converts `value` to a string key if it's not a string or symbol.
+// 如果是sting或者symbol，直接返回
+// 如果不是，那么转换成string类型
+// 注意的是，-0在被转换成string的时候会被转换成0，而我们想要保持负号。
+function toKey (value) {
+	if (typeof value === 'string' || isSymbol(value)) {
+		return value;
+	}
+
+	// ++++ 暂时不明确为什么官方的写法中要使用下面的括号
+	var result = (value + '');
+	return (value === 0 && (1 / value) === -INFINITY) ? '-0' : result;
+}
+
 
 var commonFunctions = {
 
@@ -657,12 +683,21 @@ module.exports = commonFunctions;
 
 // console.log(nodeIsTypedArray); // undefined
 
-console.log(baseIsTypedArray([])); // false
-console.log(baseIsTypedArray([1,2,3])); // true
-console.log(baseIsTypedArray()); // true
-console.log(baseIsTypedArray(null)); // true
-console.log(baseIsTypedArray(new Int16Array())); // true
+// console.log(baseIsTypedArray([])); // false
+// console.log(baseIsTypedArray([1,2,3])); // true
+// console.log(baseIsTypedArray()); // true
+// console.log(baseIsTypedArray(null)); // true
+// console.log(baseIsTypedArray(new Int16Array())); // true
 
+console.log(toKey('It is a string'));
+console.log(toKey(123));
+console.log(toKey(0));
+console.log(toKey(-0));
+console.log(toKey(1-2)); // -1
+console.log(toKey(undefined));
+console.log(toKey(null));
+console.log(toKey(function(){return 'here'}));
+console.log(toKey({name: 'Bowen'}));
 
 
 
