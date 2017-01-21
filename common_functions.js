@@ -54,6 +54,12 @@ var freeSelf = typeof self == 'object' && self && self.Object === Object && self
 var root = freeGlobal || freeSelf || Function('return this')();
 
 
+/** Built-in value references. */
+var Buffer = moduleExports ? root.Buffer : undefined;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined;
+
 
 // constructors
 // Creates a map cache object to store key-value pairs.
@@ -395,10 +401,20 @@ var commonFunctions = {
   	return commonFunctions.baseIsArguments(function() { return arguments; }()) ? 
   		commonFunctions.baseIsArguments : 
   		function(value) {
-      return commonFunctions.isObjectLike(value) && hasOwnProperty.call(value, 'callee') &&
-      	!propertyIsEnumerable.call(value, 'callee');
+	      return commonFunctions.isObjectLike(value) && hasOwnProperty.call(value, 'callee') &&
+	      	!propertyIsEnumerable.call(value, 'callee');
       }
+  },
+  // 暂时不清楚这个方法存在的意义
+  // this method return false
+  stubFalse: function () {
+  	return false;
+  },
+  isBuffer: function () {
+  	return nativeIsBuffer || commonFunctions.stubFalse;
   }
+
+
 
 
 
@@ -565,8 +581,9 @@ module.exports = commonFunctions;
 
 // console.log(freeExports); // {}
 
-console.log(root); // {}
+// console.log(root); // {}
 
+console.log(commonFunctions.isBuffer());
 
 
 
