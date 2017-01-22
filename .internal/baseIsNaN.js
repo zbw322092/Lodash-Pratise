@@ -12,7 +12,7 @@ function baseIsNaN(value) {
 
 export default baseIsNaN;
 
-console.log(baseIsNaN(123));
-console.log(baseIsNaN());
-console.log(baseIsNaN(''));
-console.log(baseIsNaN(NaN)); // true
+// console.log(baseIsNaN(123));
+// console.log(baseIsNaN());
+// console.log(baseIsNaN(''));
+// console.log(baseIsNaN(NaN)); // true

@@ -53,16 +53,17 @@
 	__webpack_require__(5);
 	__webpack_require__(6);
 	__webpack_require__(7);
+	__webpack_require__(8);
+	__webpack_require__(9);
+	__webpack_require__(10);
+	__webpack_require__(11);
+	__webpack_require__(12);
 
 /***/ },
 /* 1 */
 /***/ function(module, exports) {
 
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
+	'use strict';
 	/**
 	 * Adds the key-value `pair` to `map`.
 	 *
@@ -72,6 +73,9 @@
 	 * @returns {Object} Returns `map`.
 	 */
 
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	function addMapEntry(map, pair) {
 	  map.set(pair[0], pair[1]);
 	  return map;
@@ -85,11 +89,7 @@
 /* 2 */
 /***/ function(module, exports) {
 
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
+	'use strict';
 	/**
 	 * Adds `value` to `set`.
 	 *
@@ -98,6 +98,10 @@
 	 * @param {*} value The value to add.
 	 * @returns {Object} Returns `set`.
 	 */
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	function addSetEntry(set, value) {
 	  set.add(value);
 	  return set;
@@ -112,11 +116,7 @@
 /* 3 */
 /***/ function(module, exports) {
 
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
+	'use strict';
 	/**
 	 * A faster alternative to `Function#apply`, this function invokes `func`
 	 * with the `this` binding of `thisArg` and the arguments of `args`.
@@ -128,44 +128,48 @@
 	 * @returns {*} Returns the result of `func`.
 	 */
 	// ++++ (为什么像下面这样写原因不明确)
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	function apply(func, thisArg, args) {
-		switch (args.length) {
-			case 0:
-				return func.call(thisArg);
-			case 1:
-				return func.call(thisArg, args[0]);
-			case 2:
-				return func.call(thisArg, args[0], args[1]);
-			case 3:
-				return func.call(thisArg, args[0], args[1], args[2]);
-		}
-		return func.apply(thisArg, args);
+	  switch (args.length) {
+	    case 0:
+	      return func.call(thisArg);
+	    case 1:
+	      return func.call(thisArg, args[0]);
+	    case 2:
+	      return func.call(thisArg, args[0], args[1]);
+	    case 3:
+	      return func.call(thisArg, args[0], args[1], args[2]);
+	  }
+	  return func.apply(thisArg, args);
 	}
 
-	var f = function f() {
-		var index = -1,
-		    sum = 0,
-		    length = arguments.length;
+	exports.default = apply;
 
-		while (++index < length) {
-			sum += arguments[index];
-		}
+	// var f = function () {
+	// 	var index = -1,
+	// 		sum = 0,
+	// 		length = arguments.length;
 
-		return this.a + this.b + sum;
-	};
+	// 	while (++index < length) {
+	// 		sum += arguments[index];
+	// 	}
 
-	var o = {
-		a: 1,
-		b: 2
-	};
+	// 	return this.a + this.b + sum;
+	// }
+
+	// var o = {
+	// 	a: 1,
+	// 	b: 2
+	// }
 
 	// console.log(apply(f, o, [])); // 3
 	// console.log(apply(f, o, [1])); // 4
 	// console.log(apply(f, o, [1,2])); // 6
 	// console.log(apply(f, o, [1,2,3])); // 9
 	// console.log(apply(f, o, [1,2,3,4])); // 13
-
-	exports.default = apply;
 
 /***/ },
 /* 4 */
@@ -197,75 +201,71 @@
 		return array;
 	}
 
-	var iterateeFunc = function iterateeFunc(value, key, array) {
-		if (key == 2) return false;
-		array[key] = value * value;
-	};
-	// console.log(arrayEach([1,2,3,4], iterateeFunc)); // [ 1, 4, 3, 4 ]
-
 	exports.default = arrayEach;
 
+	// var iterateeFunc = function(value, key, array) {
+	// 	if (key == 2) return false;
+	// 	array[key] = value * value;
+	// }
+	// console.log(arrayEach([1,2,3,4], iterateeFunc)); // [ 1, 4, 3, 4 ]
 
-	var a = [1, 2, 3, 4, 5];
-	function loopOne() {
-		for (var i = 0; i < a.length; i++) {
-			console.log(a[i]);
-		}
-	}
-	// loopOne(); // 1 2 3 4 5
 
-	function loopTwo() {
-		for (var i = 0; i < a.length; i++) {
-			(function () {
-				console.log(a[i]);
-			})();
-		}
-	}
-	// loopTwo(); // 1 2 3 4 5
+	// var a = [1,2,3,4,5];
+	// function loopOne() {
+	// 	for (var i = 0; i < a.length; i++) {
+	// 		console.log(a[i]);
+	// 	}
+	// }
+	// // loopOne(); // 1 2 3 4 5
 
-	function loopThree() {
-		for (var i = 0; i < a.length; i++) {
-			setTimeout(function () {
-				console.log(a[i]);
-			}, 100);
-		}
-	}
-	// loopThree(); // 五个undefined
+	// function loopTwo() {
+	// 	for (var i = 0; i < a.length; i++) {
+	// 		(function() {
+	// 			console.log(a[i]);
+	// 		})();
+	// 	}
+	// }
+	// // loopTwo(); // 1 2 3 4 5
 
-	function loopFour() {
-		for (var i = 0; i < a.length; i++) {
-			setTimeout(function () {
-				console.log(a[i]);
-			});
-		}
-	}
-	// loopFour(); // 五个undefined
+	// function loopThree() {
+	// 	for (var i = 0; i < a.length; i++) {
+	// 		setTimeout(
+	// 		function() {
+	// 			console.log(a[i]);
+	// 		},100);
+	// 	}
+	// }
+	// // loopThree(); // 五个undefined
 
-	function loopFive() {
-		var _loop = function _loop(i) {
-			setTimeout(function () {
-				console.log(a[i]);
-			});
-		};
+	// function loopFour() {
+	// 	for (var i = 0; i < a.length; i++) {
+	// 		setTimeout(
+	// 		function() {
+	// 			console.log(a[i]);
+	// 		});
+	// 	}
+	// }
+	// // loopFour(); // 五个undefined
 
-		for (var i = 0; i < a.length; i++) {
-			_loop(i);
-		}
-	}
-	// loopFive(); // 1 2 3 4 5
+	// function loopFive() {
+	// 	for (let i = 0; i < a.length; i++) {
+	// 		setTimeout(
+	// 		function() {
+	// 			console.log(a[i]);
+	// 		});
+	// 	}
+	// }
+	// // loopFive(); // 1 2 3 4 5
 
-	function loopSix() {
-		var _loop2 = function _loop2(i) {
-			setTimeout(function () {
-				console.log(a[i]);
-			}, 1000);
-		};
-
-		for (var i = 0; i < a.length; i++) {
-			_loop2(i);
-		}
-	}
-	// loopSix(); // 1 2 3 4 5
+	// function loopSix() {
+	// 	for (let i = 0; i < a.length; i++) {
+	// 		setTimeout(
+	// 		function() {
+	// 			console.log(a[i]);
+	// 		}, 1000);
+	// 	}
+	// }
+	// // loopSix(); // 1 2 3 4 5
 
 /***/ },
 /* 5 */
@@ -304,7 +304,7 @@
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
 	/**
 	 * A specialized version of `every` for arrays.
@@ -316,27 +316,30 @@
 	 *  else `false`.
 	 */
 	function arrayEvery(array, predicate) {
-		var index = -1;
-		var length = array == null ? 0 : array.length;
+	  var index = -1;
+	  var length = array == null ? 0 : array.length;
 
-		while (++index < length) {
-			if (!predicate(array[index], index, array)) {
-				return false;
-			}
-		}
-		return true;
+	  while (++index < length) {
+	    if (!predicate(array[index], index, array)) {
+	      return false;
+	    }
+	  }
+	  return true;
 	}
 
-	var predicateFunc = function predicateFunc(value, key, array) {
-		if (value > 10) return false;else return true;
-	};
-	var a = [9, 1, 3, 6],
-	    b = [9, 1, 12, 6];
+	exports.default = arrayEvery;
+
+	// var predicateFunc = function(value, key, array) {
+	// 	if (value > 10)
+	// 		return false;
+	// 	else
+	// 		return true;
+	// };
+	// var a = [9,1,3,6],
+	// 	b = [9,1,12,6];
 
 	// console.log(arrayEvery(a, predicateFunc)); // true
 	// console.log(arrayEvery(b, predicateFunc)); // false
-
-	exports.default = arrayEvery;
 
 /***/ },
 /* 7 */
@@ -383,16 +386,232 @@
 	  return result;
 	}
 
-	var a = [1, 2, 3, 4, 5, 6];
-	var predicateFunc = function predicateFunc(value, key, array) {
-	  if (value % 2 === 0) {
-	    return true;
-	  }
-	};
+	exports.default = arrayFilter;
+
+	// var a = [1,2,3,4,5,6];
+	// var predicateFunc = function(value, key, array) {
+	// 	if (value % 2 === 0) {
+	// 		return true;
+	// 	}
+	// };
 	// console.log(arrayFilter(a,predicateFunc)); // [ 2, 4, 6 ]
 
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
 
-	exports.default = arrayFilter;
+	"use strict";
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	'use strict';
+	/**
+	 * The base implementation of `findIndex` and `findLastIndex`.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {Function} predicate The function invoked per iteration.
+	 * @param {number} fromIndex The index to search from.
+	 * @param {boolean} [fromRight] Specify iterating from right to left.
+	 * @returns {number} Returns the index of the matched value, else `-1`.
+	 */
+	// 这个function要做的事情是按照一定的条件在一个array中筛选出符合条件的index。我们可以指定index起始位置，
+	// 也可以指定是否从右边开始筛选。一旦找到了符合条件的index就停止查找，查找结束还没找到的话返回未找到。
+	// 步骤：
+	// 	根据设置来确定从哪个元素开始循环
+	// 	然后确定是从左边开始循环还是从右边开始
+	// 	根据之前的判断来循环每个元素
+	//		根据一定的条件来测试元素是否符合
+	//			只要找到一个符合的，则返回这个值
+	//			如果没有，则返回未找到
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	function baseFindIndex(array, predicate, fromIndex, fromRight) {
+		var length = array.length;
+		var index = fromIndex + (fromRight ? 1 : -1);
+
+		while (fromRight ? index-- : ++index < length) {
+			if (predicate(array[index], index, array)) {
+				return index;
+			}
+		}
+		return -1;
+
+		// 下面是我的写法。没有官方代码来的简洁。
+		// if (fromRight) {
+		// 	while (--index > -1) {
+		// 		if (predicate(array[index], index, array)) {
+		// 			return true
+		// 		}
+		// 	}
+		// 	return -1;
+		// } else {
+		// 	while (++index < length) {
+		// 		if (predicate(array[index], index, array)) {
+		// 			return true
+		// 		}
+		// 	}
+		// 	return -1;
+		// }
+	}
+
+	exports.default = baseFindIndex;
+
+	// var a = [1,2,3,4,5,6,7,8,9];
+	// var predicateFunc = function(value, key, array) {
+	// 	if (value % 6 === 0)
+	// 		return true;
+	// }
+
+	// var predicateFuncTwo = function(value, key, array) {
+	// 	if (value % 2 === 1)
+	// 		return true;
+	// }
+
+	// console.log(baseFindIndex(a, predicateFunc, 6)); // -1
+	// console.log(baseFindIndex(a, predicateFunc, 6, true));  // 5
+
+	// console.log(baseFindIndex(a, predicateFuncTwo, 0)); // 0
+	// console.log(baseFindIndex(a, predicateFuncTwo, 1, true)); // 0
+
+	// console.log(baseFindIndex(a, predicateFuncTwo)); // -1
+
+	// var i = 0;
+	// while (i-- >= 0) {
+	// 	console.log('It works, here'); // 被执行了一次
+	// }
+	// while (--i >= 0) {
+	// 	console.log('It works'); // 未被执行
+	// }
+
+
+	// var i = 5;
+	// while (i-- > 0) {
+	// 	console.log(i); // 4 3 2 1 0
+	// }
+	// console.log(i); // -1
+
+	// while (--i > 0) {
+	// 	console.log(i); // 4 3 2 1
+	// }
+	// console.log(i); // 1
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _baseFindIndex = __webpack_require__(9);
+
+	var _baseFindIndex2 = _interopRequireDefault(_baseFindIndex);
+
+	var _baseIsNaN = __webpack_require__(11);
+
+	var _baseIsNaN2 = _interopRequireDefault(_baseIsNaN);
+
+	var _strictIndexOf = __webpack_require__(12);
+
+	var _strictIndexOf2 = _interopRequireDefault(_strictIndexOf);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * The base implementation of `indexOf` without `fromIndex` bounds checks.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {*} value The value to search for.
+	 * @param {number} fromIndex The index to search from.
+	 * @returns {number} Returns the index of the matched value, else `-1`.
+	 */
+
+	function baseIndexOf(array, value, fromIndex) {
+	  return value === value ? (0, _strictIndexOf2.default)(array, value, fromIndex) : (0, _baseFindIndex2.default)(array, _baseIsNaN2.default, fromIndex);
+	}
+
+	exports.default = baseIndexOf;
+
+
+	var a = [1, 2, 3, 4, 5, 6, NaN, 8];
+	console.log(baseIndexOf(a, 3, 0));
+	console.log(baseIndexOf(a, 3, 6));
+	console.log(baseIndexOf(a, 10, 0));
+	console.log(baseIndexOf(a, NaN, 0));
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/**
+	 * The base implementation of `isNaN` without support for number objects.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is `NaN`, else `false`.
+	 */
+	// 判断是否是NaN。方法很简单，就是判断自己是否等于自己，不等的话就是NaN
+	function baseIsNaN(value) {
+	  return value !== value;
+	}
+
+	exports.default = baseIsNaN;
+
+	// console.log(baseIsNaN(123));
+	// console.log(baseIsNaN());
+	// console.log(baseIsNaN(''));
+	// console.log(baseIsNaN(NaN)); // true
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+	'use strict';
+	/**
+	 * A specialized version of `indexOf` which performs strict equality
+	 * comparisons of values, i.e. `===`.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {*} value The value to search for.
+	 * @param {number} fromIndex The index to search from.
+	 * @returns {number} Returns the index of the matched value, else `-1`.
+	 */
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function strictIndexOf(array, value, fromIndex) {
+	  var length = array.length;
+	  var index = fromIndex - 1;
+
+	  while (++index < length) {
+	    if (array[index] === value) {
+	      return index;
+	    }
+	  }
+	  return -1;
+	}
+
+	exports.default = strictIndexOf;
+
+	// var a = [1,2,3,4,5,6];
+	// console.log(strictIndexOf(a, 4, 0)); // 3
+	// console.log(strictIndexOf(a, 4)); // -1
+	// console.log(strictIndexOf(a, 9, 0)); // -1
 
 /***/ }
 /******/ ]);

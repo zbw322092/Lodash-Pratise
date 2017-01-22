@@ -34,13 +34,13 @@ function arrayFilter(array, predicate) {
   return result;
 }
 
-var a = [1,2,3,4,5,6];
-var predicateFunc = function(value, key, array) {
-	if (value % 2 === 0) {
-		return true;
-	}
-};
-// console.log(arrayFilter(a,predicateFunc)); // [ 2, 4, 6 ]
-
-
 export default arrayFilter;
+
+
+// var a = [1,2,3,4,5,6];
+// var predicateFunc = function(value, key, array) {
+// 	if (value % 2 === 0) {
+// 		return true;
+// 	}
+// };
+// console.log(arrayFilter(a,predicateFunc)); // [ 2, 4, 6 ]

@@ -19,67 +19,73 @@ function arrayEach(array, iteratee) {
 	return array;
 }
 
-var iterateeFunc = function(value, key, array) {
-	if (key == 2) return false;
-	array[key] = value * value;
-}
-// console.log(arrayEach([1,2,3,4], iterateeFunc)); // [ 1, 4, 3, 4 ]
-
 export default arrayEach;
 
-var a = [1,2,3,4,5];
-function loopOne() {
-	for (var i = 0; i < a.length; i++) {
-		console.log(a[i]);
-	}
-}
-// loopOne(); // 1 2 3 4 5
 
-function loopTwo() {
-	for (var i = 0; i < a.length; i++) {
-		(function() {
-			console.log(a[i]);
-		})();
-	}
-}
-// loopTwo(); // 1 2 3 4 5
 
-function loopThree() {
-	for (var i = 0; i < a.length; i++) {
-		setTimeout(
-		function() {
-			console.log(a[i]);
-		},100);
-	}
-}
-// loopThree(); // 五个undefined
 
-function loopFour() {
-	for (var i = 0; i < a.length; i++) {
-		setTimeout(
-		function() {
-			console.log(a[i]);
-		});
-	}
-}
-// loopFour(); // 五个undefined
 
-function loopFive() {
-	for (let i = 0; i < a.length; i++) {
-		setTimeout(
-		function() {
-			console.log(a[i]);
-		});
-	}
-}
-// loopFive(); // 1 2 3 4 5
 
-function loopSix() {
-	for (let i = 0; i < a.length; i++) {
-		setTimeout(
-		function() {
-			console.log(a[i]);
-		}, 1000);
-	}
-}
-// loopSix(); // 1 2 3 4 5
+// var iterateeFunc = function(value, key, array) {
+// 	if (key == 2) return false;
+// 	array[key] = value * value;
+// }
+// console.log(arrayEach([1,2,3,4], iterateeFunc)); // [ 1, 4, 3, 4 ]
+
+
+// var a = [1,2,3,4,5];
+// function loopOne() {
+// 	for (var i = 0; i < a.length; i++) {
+// 		console.log(a[i]);
+// 	}
+// }
+// // loopOne(); // 1 2 3 4 5
+
+// function loopTwo() {
+// 	for (var i = 0; i < a.length; i++) {
+// 		(function() {
+// 			console.log(a[i]);
+// 		})();
+// 	}
+// }
+// // loopTwo(); // 1 2 3 4 5
+
+// function loopThree() {
+// 	for (var i = 0; i < a.length; i++) {
+// 		setTimeout(
+// 		function() {
+// 			console.log(a[i]);
+// 		},100);
+// 	}
+// }
+// // loopThree(); // 五个undefined
+
+// function loopFour() {
+// 	for (var i = 0; i < a.length; i++) {
+// 		setTimeout(
+// 		function() {
+// 			console.log(a[i]);
+// 		});
+// 	}
+// }
+// // loopFour(); // 五个undefined
+
+// function loopFive() {
+// 	for (let i = 0; i < a.length; i++) {
+// 		setTimeout(
+// 		function() {
+// 			console.log(a[i]);
+// 		});
+// 	}
+// }
+// // loopFive(); // 1 2 3 4 5
+
+// function loopSix() {
+// 	for (let i = 0; i < a.length; i++) {
+// 		setTimeout(
+// 		function() {
+// 			console.log(a[i]);
+// 		}, 1000);
+// 	}
+// }
+// // loopSix(); // 1 2 3 4 5

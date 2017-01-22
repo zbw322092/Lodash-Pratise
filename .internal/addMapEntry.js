@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Adds the key-value `pair` to `map`.
  *

@@ -1,3 +1,4 @@
+'use strict';
 /**
  * A faster alternative to `Function#apply`, this function invokes `func`
  * with the `this` binding of `thisArg` and the arguments of `args`.
@@ -19,29 +20,30 @@ function apply (func, thisArg, args) {
 	return func.apply(thisArg, args);
 }
 
-var f = function () {
-	var index = -1,
-		sum = 0,
-		length = arguments.length;
+export default apply;
 
-	while (++index < length) {
-		sum += arguments[index];
-	}
 
-	return this.a + this.b + sum;
-}
 
-var o = {
-	a: 1,
-	b: 2
-}
+
+// var f = function () {
+// 	var index = -1,
+// 		sum = 0,
+// 		length = arguments.length;
+
+// 	while (++index < length) {
+// 		sum += arguments[index];
+// 	}
+
+// 	return this.a + this.b + sum;
+// }
+
+// var o = {
+// 	a: 1,
+// 	b: 2
+// }
 
 // console.log(apply(f, o, [])); // 3
 // console.log(apply(f, o, [1])); // 4
 // console.log(apply(f, o, [1,2])); // 6
 // console.log(apply(f, o, [1,2,3])); // 9
 // console.log(apply(f, o, [1,2,3,4])); // 13
-
-export default apply;
-
-

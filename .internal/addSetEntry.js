@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Adds `value` to `set`.
  *

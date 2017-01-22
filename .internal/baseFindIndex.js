@@ -47,28 +47,28 @@ function baseFindIndex(array, predicate, fromIndex, fromRight) {
 	// }
 }
 
-// export default baseFindIndex;
+export default baseFindIndex;
 
 
 
-var a = [1,2,3,4,5,6,7,8,9];
-var predicateFunc = function(value, key, array) {
-	if (value % 6 === 0)
-		return true;
-}
+// var a = [1,2,3,4,5,6,7,8,9];
+// var predicateFunc = function(value, key, array) {
+// 	if (value % 6 === 0)
+// 		return true;
+// }
 
-var predicateFuncTwo = function(value, key, array) {
-	if (value % 2 === 1)
-		return true;
-}
+// var predicateFuncTwo = function(value, key, array) {
+// 	if (value % 2 === 1)
+// 		return true;
+// }
 
-console.log(baseFindIndex(a, predicateFunc, 6)); // -1
-console.log(baseFindIndex(a, predicateFunc, 6, true));  // 5
+// console.log(baseFindIndex(a, predicateFunc, 6)); // -1
+// console.log(baseFindIndex(a, predicateFunc, 6, true));  // 5
 
-console.log(baseFindIndex(a, predicateFuncTwo, 0)); // 0
-console.log(baseFindIndex(a, predicateFuncTwo, 1, true)); // 0
+// console.log(baseFindIndex(a, predicateFuncTwo, 0)); // 0
+// console.log(baseFindIndex(a, predicateFuncTwo, 1, true)); // 0
 
-console.log(baseFindIndex(a, predicateFuncTwo)); // -1
+// console.log(baseFindIndex(a, predicateFuncTwo)); // -1
 
 // var i = 0;
 // while (i-- >= 0) {
@@ -79,7 +79,7 @@ console.log(baseFindIndex(a, predicateFuncTwo)); // -1
 // }
 
 
-var i = 5;
+// var i = 5;
 // while (i-- > 0) {
 // 	console.log(i); // 4 3 2 1 0
 // }

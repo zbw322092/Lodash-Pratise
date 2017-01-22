@@ -19,16 +19,21 @@ function arrayEvery(array, predicate) {
 	return true;
 }
 
-var predicateFunc = function(value, key, array) {
-	if (value > 10)
-		return false;
-	else
-		return true;
-};
-var a = [9,1,3,6],
-	b = [9,1,12,6];
+export default arrayEvery;
+
+
+
+
+
+
+// var predicateFunc = function(value, key, array) {
+// 	if (value > 10)
+// 		return false;
+// 	else
+// 		return true;
+// };
+// var a = [9,1,3,6],
+// 	b = [9,1,12,6];
 
 // console.log(arrayEvery(a, predicateFunc)); // true
 // console.log(arrayEvery(b, predicateFunc)); // false
-
-export default arrayEvery;
