@@ -10,6 +10,8 @@ function baseIsNaN(value) {
 	return value !== value;
 }
 
+export default baseIsNaN;
+
 console.log(baseIsNaN(123));
 console.log(baseIsNaN());
 console.log(baseIsNaN(''));
