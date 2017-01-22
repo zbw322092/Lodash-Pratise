@@ -17,6 +17,8 @@ var CLONE_DEEP_FLAG = 1,
     CLONE_FLAT_FLAG = 2,
     CLONE_SYMBOLS_FLAG = 4;
 
+/** Used as the maximum memoize cache size. */
+var MAX_MEMOIZE_SIZE = 500;
 
 var nativeMax = Math.max;
 
@@ -514,6 +516,19 @@ function toKey (value) {
 	// ++++ 暂时不明确为什么官方的写法中要使用下面的括号
 	var result = (value + '');
 	return (value === 0 && (1 / value) === -INFINITY) ? '-0' : result;
+}
+// A specialized version of `_.memoize` which clears the memoized function's
+// cache when it exceeds `MAX_MEMOIZE_SIZE`.
+function memoizeCapped (func) {
+	var result = memoize(func, function(key) {
+		if (cache.size === MAX_MEMOIZE_SIZE) {
+			cache.clear();
+		}
+		return key;
+	});
+
+	var cache = result.cache;
+	return result;
 }
 
 // ++++ (暂时不明确用途)
