@@ -12,6 +12,6 @@ function addMapEntry(map, pair) {
 	return map;
 }
 
-console.log(addMapEntry(new Map(), ['name', 'Bowen'])); // Map { 'name' => 'Bowen' }
+// console.log(addMapEntry(new Map(), ['name', 'Bowen'])); // Map { 'name' => 'Bowen' }
 
 export default addMapEntry;

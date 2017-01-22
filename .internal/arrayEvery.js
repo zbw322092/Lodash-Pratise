@@ -28,7 +28,7 @@ var predicateFunc = function(value, key, array) {
 var a = [9,1,3,6],
 	b = [9,1,12,6];
 
-console.log(arrayEvery(a, predicateFunc)); // true
-console.log(arrayEvery(b, predicateFunc)); // false
+// console.log(arrayEvery(a, predicateFunc)); // true
+// console.log(arrayEvery(b, predicateFunc)); // false
 
 export default arrayEvery;

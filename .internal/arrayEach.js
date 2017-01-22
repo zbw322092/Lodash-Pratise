@@ -23,7 +23,7 @@ var iterateeFunc = function(value, key, array) {
 	if (key == 2) return false;
 	array[key] = value * value;
 }
-console.log(arrayEach([1,2,3,4], iterateeFunc)); // [ 1, 4, 3, 4 ]
+// console.log(arrayEach([1,2,3,4], iterateeFunc)); // [ 1, 4, 3, 4 ]
 
 export default arrayEach;
 

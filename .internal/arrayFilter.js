@@ -40,7 +40,7 @@ var predicateFunc = function(value, key, array) {
 		return true;
 	}
 };
-console.log(arrayFilter(a,predicateFunc)); // [ 2, 4, 6 ]
+// console.log(arrayFilter(a,predicateFunc)); // [ 2, 4, 6 ]
 
 
 export default arrayFilter;

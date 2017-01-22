@@ -11,7 +11,7 @@ function addSetEntry(set, value) {
 	return set;
 }
 
-console.log(addSetEntry(new Set(), null)); // Set { null }
-console.log(addSetEntry(new Set(), [1,2,3])); // Set { [ 1, 2, 3 ] }
+// console.log(addSetEntry(new Set(), null)); // Set { null }
+// console.log(addSetEntry(new Set(), [1,2,3])); // Set { [ 1, 2, 3 ] }
 
 export default addSetEntry;

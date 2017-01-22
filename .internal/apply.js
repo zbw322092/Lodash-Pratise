@@ -36,11 +36,11 @@ var o = {
 	b: 2
 }
 
-console.log(apply(f, o, [])); // 3
-console.log(apply(f, o, [1])); // 4
-console.log(apply(f, o, [1,2])); // 6
-console.log(apply(f, o, [1,2,3])); // 9
-console.log(apply(f, o, [1,2,3,4])); // 13
+// console.log(apply(f, o, [])); // 3
+// console.log(apply(f, o, [1])); // 4
+// console.log(apply(f, o, [1,2])); // 6
+// console.log(apply(f, o, [1,2,3])); // 9
+// console.log(apply(f, o, [1,2,3,4])); // 13
 
 export default apply;
 
