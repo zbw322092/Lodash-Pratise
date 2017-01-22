@@ -47,6 +47,10 @@ function baseFindIndex(array, predicate, fromIndex, fromRight) {
 	// }
 }
 
+// export default baseFindIndex;
+
+
+
 var a = [1,2,3,4,5,6,7,8,9];
 var predicateFunc = function(value, key, array) {
 	if (value % 6 === 0)
@@ -64,6 +68,7 @@ console.log(baseFindIndex(a, predicateFunc, 6, true));  // 5
 console.log(baseFindIndex(a, predicateFuncTwo, 0)); // 0
 console.log(baseFindIndex(a, predicateFuncTwo, 1, true)); // 0
 
+console.log(baseFindIndex(a, predicateFuncTwo)); // -1
 
 // var i = 0;
 // while (i-- >= 0) {
