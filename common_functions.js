@@ -98,6 +98,10 @@ var reIsDeepProp = /\.|\[(?:[^[\]]*|(["'])(?:(?!\1)[^\\]|\\.)*?\1)\]/,
     reLeadingDot = /^\./,
     rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
 
+/** Used to match backslashes in property paths. */
+var reEscapeChar = /\\(\\)?/g;
+
+
 // Detect free variable `exports`.
 var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
 // Detect free variable `module`.
@@ -517,6 +521,17 @@ function toKey (value) {
 	var result = (value + '');
 	return (value === 0 && (1 / value) === -INFINITY) ? '-0' : result;
 }
+
+// Casts `value` to a path array if it's not one.
+function castPath (value, object) {
+	if (isArray(value)) {
+		return value;
+	}
+
+	return isKey(value, object) ? [value] : stringToPath(toString(value));
+}
+
+
 // A specialized version of `_.memoize` which clears the memoized function's
 // cache when it exceeds `MAX_MEMOIZE_SIZE`.
 function memoizeCapped (func) {
@@ -530,6 +545,18 @@ function memoizeCapped (func) {
 	var cache = result.cache;
 	return result;
 }
+
+// Converts `string` to a property path array.
+var stringToPath = memoizeCapped(function(string) {
+	var result = [];
+	if (reLeadingDot.test(string)) {
+		result.push('');
+	}
+	string.replace(rePropName, function(match, number, quote, string) {
+		result.push(quote ? string.replace(reEscapeChar, '$1') : (number || match));
+	});
+	return result;
+});
 
 // ++++ (暂时不明确用途)
 // Creates a function that memoizes the result of `func`.
@@ -734,15 +761,15 @@ module.exports = commonFunctions;
 // console.log(baseIsTypedArray(null)); // true
 // console.log(baseIsTypedArray(new Int16Array())); // true
 
-console.log(toKey('It is a string'));
-console.log(toKey(123));
-console.log(toKey(0));
-console.log(toKey(-0));
-console.log(toKey(1-2)); // -1
-console.log(toKey(undefined));
-console.log(toKey(null));
-console.log(toKey(function(){return 'here'}));
-console.log(toKey({name: 'Bowen'}));
+// console.log(toKey('It is a string'));
+// console.log(toKey(123));
+// console.log(toKey(0));
+// console.log(toKey(-0));
+// console.log(toKey(1-2)); // -1
+// console.log(toKey(undefined));
+// console.log(toKey(null));
+// console.log(toKey(function(){return 'here'}));
+// console.log(toKey({name: 'Bowen'}));
 
 
 
