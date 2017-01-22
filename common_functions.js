@@ -516,14 +516,31 @@ function toKey (value) {
 	return (value === 0 && (1 / value) === -INFINITY) ? '-0' : result;
 }
 
+// ++++ (暂时不明确用途)
+// Creates a function that memoizes the result of `func`.
 function memoize (func, resolver) {
 	if (typeof func != 'function' || (resolver != undefined && typeof resolver != 'function')) {
 		return new TypeError(FUNC_ERROR_TEXT);
 	}
 
-	
+	var memoized = function () {
+		var args = arguments,
+				key = resolver ? resolver.apply(this, args) : args[0],
+				cache = memoized.cache;
+
+		if (cache.has(key)) {
+			return cache.get(key);
+		}
+
+		var result = func.apply(this, args);
+		memoized.cache = cache.set(key, result) || cache;
+		return result;
+	};
+	memoized.cache = new (memoize.Cache || MapCache);
+	return memoized;
 }
 
+memoize.Cache = MapCache;
 
 var commonFunctions = {
 
