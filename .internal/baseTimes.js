@@ -19,9 +19,11 @@ function baseTimes(n, iteratee) {
 	return result;
 }
 
-var iterateeFunc = function(value) {
-	return value * value;
-};
+export default baseTimes;
+
+// var iterateeFunc = function(value) {
+// 	return value * value;
+// };
 
 // console.log(baseTimes(8, iterateeFunc));
 // console.log(baseTimes(0, iterateeFunc)); // []

@@ -11,5 +11,6 @@ require('./baseFindIndex.js');
 require('./baseIndexOf.js');
 require('./baseIsNaN.js');
 require('./strictIndexOf.js');
-require('./arrayIncludesWith');
-require('./baseTimes');
+require('./arrayIncludesWith.js');
+require('./baseTimes.js');
+require('./arrayPush.js');
