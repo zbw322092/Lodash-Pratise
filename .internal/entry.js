@@ -25,3 +25,5 @@ require('./shuffleSelf.js');
 require('./arraySampleSize.js');
 require('./arraySome.js');
 require('./asciiSize.js');
+require('./asciiToArray.js');
+require('./asciiWords.js');
