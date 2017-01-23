@@ -15,3 +15,4 @@ require('./arrayIncludesWith.js');
 require('./baseTimes.js');
 require('./arrayPush.js');
 require('./arrayMap.js');
+require('./arrayReduce.js');
