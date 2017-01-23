@@ -59,6 +59,13 @@
 	__webpack_require__(11);
 	__webpack_require__(12);
 	__webpack_require__(13);
+	__webpack_require__(14);
+	__webpack_require__(15);
+	__webpack_require__(16);
+	__webpack_require__(17);
+	__webpack_require__(18);
+	__webpack_require__(19);
+	__webpack_require__(20);
 
 /***/ },
 /* 1 */
@@ -652,7 +659,7 @@
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
 	/**
 	 * This function is like `arrayIncludes` except that it accepts a comparator.
@@ -665,25 +672,333 @@
 	 */
 
 	function arrayIncludesWith(array, value, comparator) {
-		var index = -1;
-		var length = array == null ? 0 : array.length;
+	  var index = -1;
+	  var length = array == null ? 0 : array.length;
 
-		while (++index < length) {
-			if (comparator(value, array[index])) {
-				return true;
-			}
-		}
-		return false;
+	  while (++index < length) {
+	    if (comparator(value, array[index])) {
+	      return true;
+	    }
+	  }
+	  return false;
 	}
 
 	exports.default = arrayIncludesWith;
 
+	// var conparatorFunc = function(value1, value2) {
+	// 	if (value1 * 3 === value2)
+	// 		return true;
+	// };
+	// console.log(arrayIncludesWith([1,2,3,4], 2, conparatorFunc)); // false
+	// console.log(arrayIncludesWith([1,2,3,4,5,6], 2, conparatorFunc)); // true
 
-	var conparatorFunc = function conparatorFunc(value1, value2) {
-		if (value1 * 3 === value2) return true;
-	};
-	console.log(arrayIncludesWith([1, 2, 3, 4], 2, conparatorFunc));
-	console.log(arrayIncludesWith([1, 2, 3, 4, 5, 6], 2, conparatorFunc));
+/***/ },
+/* 14 */
+/***/ function(module, exports) {
+
+	'use strict';
+	/**
+	 * The base implementation of `times` without support for max array length checks.
+	 *
+	 * @private
+	 * @param {number} n The number of times to invoke `iteratee`.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @returns {Array} Returns the array of results.
+	 */
+	// 要做的事情就是设置一个array，然后一个每次循环都会调用的函数（以index为参数），然后将函数每次的结果放到数组对应的元素位置上。
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function baseTimes(n, iteratee) {
+	  var index = -1;
+	  var result = Array(n);
+
+	  while (++index < n) {
+	    result[index] = iteratee(index);
+	  }
+	  return result;
+	}
+
+	exports.default = baseTimes;
+
+	// var iterateeFunc = function(value) {
+	// 	return value * value;
+	// };
+
+	// console.log(baseTimes(8, iterateeFunc));
+	// console.log(baseTimes(0, iterateeFunc)); // []
+	// console.log(baseTimes({}, iterateeFunc)); // [ {} ]
+	// console.log(baseTimes({name: 'Bowen', age: 23}, iterateeFunc)); // [ { name: 'Bowen', age: 23 } ]
+	// console.log(baseTimes(undefined, iterateeFunc)); // [ undefined ]
+	// console.log(baseTimes(null, iterateeFunc)); // [ null ]
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	'use strict';
+	/**
+	 * Appends the elements of `values` to `array`.
+	 *
+	 * @private
+	 * @param {Array} array The array to modify.
+	 * @param {Array} values The values to append.
+	 * @returns {Array} Returns `array`.
+	 */
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function arrayPush(array, values) {
+	  var index = -1;
+	  var length = values.length;
+	  var offsets = array.length;
+
+	  while (++index < length) {
+	    array[offsets + index] = values[index];
+	  }
+	  return array;
+	}
+
+	exports.default = arrayPush;
+
+	// var f = function() {};
+	// console.log(arrayPush([1,2,3,4], [5,6,7]));
+	// console.log(arrayPush(f, [5,6,7])); // { [Function] '0': 5, '1': 6, '2': 7 }
+	// console.log(f); // { [Function] '0': 5, '1': 6, '2': 7 }
+	// // console.log(arrayPush(undefined, [5,6,7])); // 报错
+	// console.log(arrayPush('It is a string', [5,6,7])); // It is a string
+
+/***/ },
+/* 16 */
+/***/ function(module, exports) {
+
+	'use strict';
+	/**
+	 * A specialized version of `map` for arrays.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @returns {Array} Returns the new mapped array.
+	 */
+	// 参数：一个array，一个每次循环都会调用的函数
+	// 返回，每次循环调用函数处理过之后的array。因为不override原来的数组，所以我们新创建一个数组。
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function arrayMap(array, iteratee) {
+	  var index = -1;
+	  var length = array == null ? 0 : array.length;
+	  var result = Array(length);
+
+	  while (++index < length) {
+	    result[index] = iteratee(array[index], index, array);
+	  }
+	  return result;
+	}
+
+	exports.default = arrayMap;
+
+	// var a = [1,2,3,4,5];
+	// var iterateeFunc = function(value, key, array) {
+	// 	return value * value;
+	// };
+	// var f = function(v1,v2) {};
+	// f[0] = 8;
+	// f[1] = 10;
+
+	// var o = {0: 20, 1: 23, length: 2};
+	// var o2 = {1: 20, 2: 23, length: 2};
+
+	// var s = 'string';
+	// var s2 = '8899';
+
+	// console.log(arrayMap(a, iterateeFunc)); // [ 1, 4, 9, 16, 25 ]
+	// console.log(arrayMap(function(){}, iterateeFunc)); // []
+	// console.log(arrayMap(f, iterateeFunc)); // [ 64, 100 ]
+	// console.log(arrayMap(o, iterateeFunc)); // [ 400, 529 ]
+	// console.log(arrayMap(o2, iterateeFunc)); // [ NaN, 400 ]
+	// console.log(arrayMap(s, iterateeFunc)); // [ NaN, NaN, NaN, NaN, NaN, NaN ]
+	// console.log(arrayMap(s2, iterateeFunc)); // [ 64, 64, 81, 81 ]
+
+/***/ },
+/* 17 */
+/***/ function(module, exports) {
+
+	'use strict';
+	/**
+	 * A specialized version of `reduce` for arrays.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @param {*} [accumulator] The initial value.
+	 * @param {boolean} [initAccum] Specify using the first element of `array` as
+	 *  the initial value.
+	 * @returns {*} Returns the accumulated value.
+	 */
+	// 参数：一个array，一个每次循环都会调用的函数，初始值，是否将第一个元素设置为初始值
+	// 返回：一个累积之后的值
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function arrayReduce(array, iteratee, accumulator, initAccum) {
+	  // let index = initAccum ? 0 : -1;
+	  // accumulator = initAccum ? array[0] : accumulator;
+	  // const length = array == null ? 0 : array.length;
+
+	  // while (++index < length) {
+	  // 	accumulator += iteratee(array[index], index, array);
+	  // }
+	  // return accumulator;
+
+	  var index = -1;
+	  var length = array == null ? 0 : array.length;
+
+	  // 长度不为0且initAccum为true的时候，取元素第一个值。
+	  if (initAccum && length) {
+	    // 这里一个巧妙的设计就是我们没有根据initAccum的值取单独的设置index的值，而是这里因为要取数组第一个元素，自然的给index加了1。
+	    accumulator = array[++index];
+	  }
+	  while (++index < length) {
+	    // 其实这里没有做叠加的事情，这个事情留给iteratee去做了。
+	    accumulator = iteratee(accumulator, array[index], index, array);
+	  }
+	  return accumulator;
+	}
+
+	exports.default = arrayReduce;
+
+	// var a = [1,2,3];
+	// var iterateeFunc = function(accumulator, value, key, array) {
+	// 	return accumulator += value * value;
+	// };
+	// console.log(arrayReduce(a, iterateeFunc, 0, false)); // 14
+	// console.log(arrayReduce(a, iterateeFunc, 10, false)); // 24
+	// console.log(arrayReduce(a, iterateeFunc, 10, true)); // 14 这里即使提供了初始值，但是因为initAccum是true，还是取了数组第一个元素做初始值。
+	// console.log(arrayReduce([], iterateeFunc, 0, false)); // 0
+	// console.log(arrayReduce([], iterateeFunc, undefined, false)); // undefined
+	// console.log(arrayReduce([], iterateeFunc, undefined, true)); // undefined
+	// console.log(arrayReduce([], iterateeFunc)); // undefined
+	// console.log(arrayReduce([], iterateeFunc, 20, true)); // 20
+	// console.log(arrayReduce([], iterateeFunc, 20, false)); // 20
+
+/***/ },
+/* 18 */
+/***/ function(module, exports) {
+
+	'use strict';
+	/**
+	 * A specialized version of `reduceRight` for arrays.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @param {*} [accumulator] The initial value.
+	 * @param {boolean} [initAccum] Specify using the last element of `array` as
+	 *  the initial value.
+	 * @returns {*} Returns the accumulated value.
+	 */
+	// 参数：一个数组，一个每次循环都会调用的函数，一个初始值，是否使用数组的最后一个元素作为初始值。
+	// 返回值：累积之后的值。
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function arrayReduceRight(array, iteratee, accumulator, initAccum) {
+	  var length = array == null ? 0 : array.length;
+
+	  if (initAccum && length) {
+	    accumulator = array[--length];
+	  }
+
+	  // 这里不需要进行一个比较，因为0也会被当成falsely value。所以我们只需要一直这么减下去。我们想要取到index 0，所以把--
+	  // 放在后面，否则放在前面的话最小只能取到1。
+	  while (length--) {
+	    accumulator = iteratee(accumulator, array[length], length, array);
+	  }
+	  return accumulator;
+	}
+
+	exports.default = arrayReduceRight;
+
+	// var a = [1,2,3];
+	// var iterateeFunc = function(accumulator, value, key, array) {
+	// 	return accumulator += value * value;
+	// };
+	// console.log(arrayReduceRight(a, iterateeFunc, 0, false)); // 14
+	// console.log(arrayReduceRight(a, iterateeFunc, 0, true)); // 8
+	// console.log(arrayReduceRight({name: 'Bowen'}, iterateeFunc, 10, false)); // 10
+
+/***/ },
+/* 19 */
+/***/ function(module, exports) {
+
+	'use strict';
+	/**
+	 * The base implementation of `random` without support for returning
+	 * floating-point numbers.
+	 *
+	 * @private
+	 * @param {number} lower The lower bound.
+	 * @param {number} upper The upper bound.
+	 * @returns {number} Returns the random number.
+	 */
+	// 参数： 一个上限值，一个下限值。
+	// 返回值：在这个上限值和下限值之间的一个随机数
+	// 这个函数上下界限都可能取到，也就是[lower, upper]
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function baseRandom(lower, upper) {
+	  return lower + Math.floor(Math.random() * (upper - lower + 1));
+	}
+
+	exports.default = baseRandom;
+
+	// console.log(baseRandom(0,100));
+	// console.log(baseRandom(-100,-300));
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _baseRandom = __webpack_require__(19);
+
+	var _baseRandom2 = _interopRequireDefault(_baseRandom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * A specialized version of `sample` for arrays.
+	 *
+	 * @private
+	 * @param {Array} array The array to sample.
+	 * @returns {*} Returns the random element.
+	 */
+	// 这个函数做的事情就是随机的返回数组中的一个元素值。
+	// 参数：一个array
+	// 返回值：数组中的一个随机的元素
+	function arraySample(array) {
+	  var length = array.length;
+	  return length === 0 ? undefined : array[(0, _baseRandom2.default)(0, length - 1)];
+	}
+
+	exports.default = arraySample;
+
+
+	console.log(arraySample([1, 2, 3, 4, 5]));
 
 /***/ }
 /******/ ]);

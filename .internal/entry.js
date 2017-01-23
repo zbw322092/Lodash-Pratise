@@ -17,3 +17,5 @@ require('./arrayPush.js');
 require('./arrayMap.js');
 require('./arrayReduce.js');
 require('./arrayReduceRight.js');
+require('./baseRandom.js');
+require('./arraySample.js');

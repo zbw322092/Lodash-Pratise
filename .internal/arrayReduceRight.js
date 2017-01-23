@@ -28,11 +28,19 @@ function arrayReduceRight(array, iteratee, accumulator, initAccum) {
 	return accumulator;
 }
 
-// export default arrayReduceRight;
-var a = [1,2,3];
-var iterateeFunc = function(accumulator, value, key, array) {
-	return accumulator += value * value;
-};
-console.log(arrayReduceRight(a, iterateeFunc, 0, false)); // 14
-console.log(arrayReduceRight(a, iterateeFunc, 0, true)); // 8
-console.log(arrayReduceRight({name: 'Bowen'}, iterateeFunc, 10, false)); // 10
+export default arrayReduceRight;
+
+
+
+
+
+
+
+
+// var a = [1,2,3];
+// var iterateeFunc = function(accumulator, value, key, array) {
+// 	return accumulator += value * value;
+// };
+// console.log(arrayReduceRight(a, iterateeFunc, 0, false)); // 14
+// console.log(arrayReduceRight(a, iterateeFunc, 0, true)); // 8
+// console.log(arrayReduceRight({name: 'Bowen'}, iterateeFunc, 10, false)); // 10
