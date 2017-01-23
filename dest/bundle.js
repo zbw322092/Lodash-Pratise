@@ -58,6 +58,7 @@
 	__webpack_require__(9);
 	__webpack_require__(11);
 	__webpack_require__(12);
+	__webpack_require__(13);
 
 /***/ },
 /* 1 */
@@ -428,12 +429,11 @@
 
 	exports.default = arrayIncludes;
 
-
-	console.log(arrayIncludes([1, 2, 3, 4, 5], 3));
-	console.log(arrayIncludes([1, 2, 3, 4, NaN, 5], NaN));
-	console.log(arrayIncludes([], undefined));
-	console.log(arrayIncludes([], null));
-	console.log(arrayIncludes([undefined], undefined));
+	// console.log(arrayIncludes([1,2,3,4,5], 3)); // true
+	// console.log(arrayIncludes([1,2,3,4,NaN,5], NaN)); // true
+	// console.log(arrayIncludes([],undefined)); // false
+	// console.log(arrayIncludes([],null)); // false
+	// console.log(arrayIncludes([undefined],undefined)); // true
 
 /***/ },
 /* 9 */
@@ -644,6 +644,46 @@
 	// console.log(strictIndexOf(a, 4, 0)); // 3
 	// console.log(strictIndexOf(a, 4)); // -1
 	// console.log(strictIndexOf(a, 9, 0)); // -1
+
+/***/ },
+/* 13 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	/**
+	 * This function is like `arrayIncludes` except that it accepts a comparator.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to inspect.
+	 * @param {*} target The value to search for.
+	 * @param {Function} comparator The comparator invoked per element.
+	 * @returns {boolean} Returns `true` if `target` is found, else `false`.
+	 */
+
+	function arrayIncludesWith(array, value, comparator) {
+		var index = -1;
+		var length = array == null ? 0 : array.length;
+
+		while (++index < length) {
+			if (comparator(value, array[index])) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	exports.default = arrayIncludesWith;
+
+
+	var conparatorFunc = function conparatorFunc(value1, value2) {
+		if (value1 * 3 === value2) return true;
+	};
+	console.log(arrayIncludesWith([1, 2, 3, 4], 2, conparatorFunc));
+	console.log(arrayIncludesWith([1, 2, 3, 4, 5, 6], 2, conparatorFunc));
 
 /***/ }
 /******/ ]);

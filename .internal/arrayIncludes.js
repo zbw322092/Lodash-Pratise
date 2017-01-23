@@ -17,8 +17,8 @@ function arrayIncludes(array, value) {
 export default arrayIncludes;
 
 
-console.log(arrayIncludes([1,2,3,4,5], 3)); // true
-console.log(arrayIncludes([1,2,3,4,NaN,5], NaN)); // true
-console.log(arrayIncludes([],undefined)); // false
-console.log(arrayIncludes([],null)); // false
-console.log(arrayIncludes([undefined],undefined)); // true
+// console.log(arrayIncludes([1,2,3,4,5], 3)); // true
+// console.log(arrayIncludes([1,2,3,4,NaN,5], NaN)); // true
+// console.log(arrayIncludes([],undefined)); // false
+// console.log(arrayIncludes([],null)); // false
+// console.log(arrayIncludes([undefined],undefined)); // true
