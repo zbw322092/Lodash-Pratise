@@ -19,3 +19,5 @@ require('./arrayReduce.js');
 require('./arrayReduceRight.js');
 require('./baseRandom.js');
 require('./arraySample.js');
+require('./baseClamp.js');
+require('./copyArray.js');
