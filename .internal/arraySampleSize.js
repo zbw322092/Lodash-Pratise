@@ -35,8 +35,8 @@ function arraySampleSize(array, n) {
 
 export default arraySampleSize;
 
-var a = [1,2,3,4,5,6,7,8];
-console.log(arraySampleSize(a, 4));
+// var a = [1,2,3,4,5,6,7,8];
+// console.log(arraySampleSize(a, 4));
 
 
 
