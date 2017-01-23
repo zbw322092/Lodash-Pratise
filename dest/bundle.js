@@ -54,8 +54,8 @@
 	__webpack_require__(6);
 	__webpack_require__(7);
 	__webpack_require__(8);
-	__webpack_require__(9);
 	__webpack_require__(10);
+	__webpack_require__(9);
 	__webpack_require__(11);
 	__webpack_require__(12);
 
@@ -398,12 +398,91 @@
 
 /***/ },
 /* 8 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _baseIndexOf = __webpack_require__(9);
+
+	var _baseIndexOf2 = _interopRequireDefault(_baseIndexOf);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * A specialized version of `includes` for arrays without support for
+	 * specifying an index to search from.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to inspect.
+	 * @param {*} target The value to search for.
+	 * @returns {boolean} Returns `true` if `target` is found, else `false`.
+	 */
+	function arrayIncludes(array, value) {
+	  var length = array == null ? 0 : array.length;
+	  return !!length && (0, _baseIndexOf2.default)(array, value, 0) > -1;
+	}
+
+	exports.default = arrayIncludes;
+
+
+	console.log(arrayIncludes([1, 2, 3, 4, 5], 3));
+	console.log(arrayIncludes([1, 2, 3, 4, NaN, 5], NaN));
+	console.log(arrayIncludes([], undefined));
+	console.log(arrayIncludes([], null));
+	console.log(arrayIncludes([undefined], undefined));
 
 /***/ },
 /* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _baseFindIndex = __webpack_require__(10);
+
+	var _baseFindIndex2 = _interopRequireDefault(_baseFindIndex);
+
+	var _baseIsNaN = __webpack_require__(11);
+
+	var _baseIsNaN2 = _interopRequireDefault(_baseIsNaN);
+
+	var _strictIndexOf = __webpack_require__(12);
+
+	var _strictIndexOf2 = _interopRequireDefault(_strictIndexOf);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * The base implementation of `indexOf` without `fromIndex` bounds checks.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {*} value The value to search for.
+	 * @param {number} fromIndex The index to search from.
+	 * @returns {number} Returns the index of the matched value, else `-1`.
+	 */
+
+	function baseIndexOf(array, value, fromIndex) {
+	  return value === value ? (0, _strictIndexOf2.default)(array, value, fromIndex) : (0, _baseFindIndex2.default)(array, _baseIsNaN2.default, fromIndex);
+	}
+
+	exports.default = baseIndexOf;
+
+	// var a = [1,2,3,4,5,6,NaN,8];
+	// console.log(baseIndexOf(a, 3, 0)); // 2
+	// console.log(baseIndexOf(a, 3, 6)); // -1
+	// console.log(baseIndexOf(a, 10, 0)); // -1
+	// console.log(baseIndexOf(a, NaN, 0)); // 6
+
+/***/ },
+/* 10 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -499,53 +578,6 @@
 	// 	console.log(i); // 4 3 2 1
 	// }
 	// console.log(i); // 1
-
-/***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _baseFindIndex = __webpack_require__(9);
-
-	var _baseFindIndex2 = _interopRequireDefault(_baseFindIndex);
-
-	var _baseIsNaN = __webpack_require__(11);
-
-	var _baseIsNaN2 = _interopRequireDefault(_baseIsNaN);
-
-	var _strictIndexOf = __webpack_require__(12);
-
-	var _strictIndexOf2 = _interopRequireDefault(_strictIndexOf);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	/**
-	 * The base implementation of `indexOf` without `fromIndex` bounds checks.
-	 *
-	 * @private
-	 * @param {Array} array The array to inspect.
-	 * @param {*} value The value to search for.
-	 * @param {number} fromIndex The index to search from.
-	 * @returns {number} Returns the index of the matched value, else `-1`.
-	 */
-
-	function baseIndexOf(array, value, fromIndex) {
-	  return value === value ? (0, _strictIndexOf2.default)(array, value, fromIndex) : (0, _baseFindIndex2.default)(array, _baseIsNaN2.default, fromIndex);
-	}
-
-	exports.default = baseIndexOf;
-
-
-	var a = [1, 2, 3, 4, 5, 6, NaN, 8];
-	console.log(baseIndexOf(a, 3, 0));
-	console.log(baseIndexOf(a, 3, 6));
-	console.log(baseIndexOf(a, 10, 0));
-	console.log(baseIndexOf(a, NaN, 0));
 
 /***/ },
 /* 11 */
