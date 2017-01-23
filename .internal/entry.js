@@ -16,3 +16,4 @@ require('./baseTimes.js');
 require('./arrayPush.js');
 require('./arrayMap.js');
 require('./arrayReduce.js');
+require('./arrayReduceRight.js');
