@@ -16,7 +16,10 @@ function copyArray(source, array) {
 	let index = -1;
 	const length = source.length;
 
-	array = array || Array(length);
+	// array = array || Array(length);
+	// 下面是官方代码中的写法
+	// 表达的意思和起到的作用和上面自己写的那行代码是一样的。但是官方的代码透出对表达式更深入的理解。
+	array || (array = Array(length));
 	while (++index < length) {
 		array[index] = source[index];
 	}

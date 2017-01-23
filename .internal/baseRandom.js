@@ -22,3 +22,4 @@ export default baseRandom;
 
 // console.log(baseRandom(0,100));
 // console.log(baseRandom(-100,-300));
+// console.log(baseRandom(NaN, NaN)); // NaN

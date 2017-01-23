@@ -66,6 +66,9 @@
 	__webpack_require__(18);
 	__webpack_require__(19);
 	__webpack_require__(20);
+	__webpack_require__(21);
+	__webpack_require__(22);
+	__webpack_require__(23);
 
 /***/ },
 /* 1 */
@@ -963,6 +966,7 @@
 
 	// console.log(baseRandom(0,100));
 	// console.log(baseRandom(-100,-300));
+	// console.log(baseRandom(NaN, NaN)); // NaN
 
 /***/ },
 /* 20 */
@@ -997,8 +1001,159 @@
 
 	exports.default = arraySample;
 
+	// console.log(arraySample([1,2,3,4,5]));
 
-	console.log(arraySample([1, 2, 3, 4, 5]));
+/***/ },
+/* 21 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	/**
+	 * The base implementation of `clamp` which doesn't coerce arguments.
+	 *
+	 * @private
+	 * @param {number} number The number to clamp.
+	 * @param {number} [lower] The lower bound.
+	 * @param {number} upper The upper bound.
+	 * @returns {number} Returns the clamped number.
+	 */
+	// 参数：一个需要被夹在中间的值，一个上限值，一个下限值
+	// 返回值：三个数中处于中间的值
+
+	function baseClamp(number, lower, upper) {
+		if (number === number) {
+			if (upper !== undefined) {
+				number = number <= upper ? number : upper;
+			}
+			if (lower !== undefined) {
+				number = number >= lower ? number : lower;
+			}
+		}
+		return number;
+	}
+
+	exports.default = baseClamp;
+
+	// 正确的使用
+	// console.log(baseClamp(3,1,5)); // 3
+	// console.log(baseClamp(0,1,5)); // 1
+	// console.log(baseClamp(10,1,5)); // 5
+	// console.log(baseClamp(3,3,3)); // 3
+
+
+	// // 错误的使用
+	// console.log(baseClamp(0,5,1)); // 5
+	// console.log(baseClamp(3,5,1)); // 5
+
+
+	// console.log(baseClamp(10,null,null)); // null
+	// console.log(baseClamp(10,-10,null)); // null   null会被转换成0. Number(null)结果是0
+	// console.log(baseClamp({},10,20)); // 20  {}和数字比较都会返回false
+
+/***/ },
+/* 22 */
+/***/ function(module, exports) {
+
+	'use strict';
+	/**
+	 * Copies the values of `source` to `array`.
+	 *
+	 * @private
+	 * @param {Array} source The array to copy values from.
+	 * @param {Array} [array=[]] The array to copy values to.
+	 * @returns {Array} Returns `array`.
+	 */
+	// 需要做的事情：将一个数组拷贝到另外一个数组中。另外一个数组存在的话，覆盖对应的元素，未被覆盖到的不动。
+	// 如果另一个数组不存在的话就新建一个数组再进行拷贝。
+	// 参数：需要被拷贝的array，目标数组
+	// 返回：目标数组
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	function copyArray(source, array) {
+		var index = -1;
+		var length = source.length;
+
+		// array = array || Array(length);
+		// 下面是官方代码中的写法
+		// 表达的意思和起到的作用和上面自己写的那行代码是一样的。但是官方的代码透出对表达式更深入的理解。
+		array || (array = Array(length));
+		while (++index < length) {
+			array[index] = source[index];
+		}
+		return array;
+	}
+
+	exports.default = copyArray;
+
+	// console.log(copyArray([1,2,3],[0,0,0,0,0,0,0])); // [ 1, 2, 3, 0, 0, 0, 0 ]
+	// console.log(copyArray([1,,,,,6],[0,0,0,0,0,0,0])); // [ 1, undefined, undefined, undefined, undefined, 6, 0 ]
+	// console.log(copyArray([1,,,,,6],[0,0])); // [ 1, undefined, undefined, undefined, undefined, 6 ]
+	// console.log(copyArray(function(){},[0,0])); // [0, 0]
+	// console.log(copyArray([0,0], function(){})); // { [Function] '0': 0, '1': 0 }
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _baseRandom = __webpack_require__(19);
+
+	var _baseRandom2 = _interopRequireDefault(_baseRandom);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * A specialized version of `shuffle` which mutates and sets the size of `array`.
+	 *
+	 * @private
+	 * @param {Array} array The array to shuffle.
+	 * @param {number} [size=array.length] The size of `array`.
+	 * @returns {Array} Returns `array`.
+	 */
+	// 参数： 一个数组，一个数值，代表shuffle之后的数组长度
+	// 返回：shuffle之后的数组
+	// 参数缺失怎么办
+	// 参数类型不对怎么办
+	// 参数类型对但是值不符合逻辑怎么办
+	function shuffleSelf(array, size) {
+		var index = -1;
+		var length = array.length;
+		var lastIndex = length - 1;
+		console.log('lastIndex: ', lastIndex);
+		size = size === undefined ? length : size;
+		while (++index < size) {
+			// 把index改成0也是一种变换方式
+			// const rand = baseRandom(0, lastIndex);
+			var rand = (0, _baseRandom2.default)(index, lastIndex);
+			console.log(rand);
+			var value = array[rand];
+
+			array[rand] = array[index];
+			array[index] = value;
+		}
+		array.length = size;
+		return array;
+	}
+
+	exports.default = shuffleSelf;
+
+	// var a = [1,2,3,4,5,6,7,8];
+	// console.log(shuffleSelf(a));
+	// console.log(shuffleSelf(a,4));
+	// console.log(shuffleSelf(function(){},4)); // 报错了 Cannot assign to read only property 'length' of function () {}
+
+	console.log(shuffleSelf({}, 4));
 
 /***/ }
 /******/ ]);
