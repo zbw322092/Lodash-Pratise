@@ -19,13 +19,11 @@ function shuffleSelf(array, size) {
 	let index = -1;
 	const length = array.length;
 	const lastIndex = length - 1;
-	console.log('lastIndex: ', lastIndex);
 	size = size === undefined ? length : size;
 	while (++index < size) {
 		// 把index改成0也是一种变换方式
 		// const rand = baseRandom(0, lastIndex);
 		const rand = baseRandom(index, lastIndex);
-		console.log(rand);
 		const value = array[rand];
 
 		array[rand] = array[index];

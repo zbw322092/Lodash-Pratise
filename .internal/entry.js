@@ -22,3 +22,4 @@ require('./arraySample.js');
 require('./baseClamp.js');
 require('./copyArray.js');
 require('./shuffleSelf.js');
+require('./arraySampleSize.js');
