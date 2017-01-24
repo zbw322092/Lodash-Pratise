@@ -28,3 +28,4 @@ require('./asciiSize.js');
 require('./asciiToArray.js');
 require('./asciiWords.js');
 require('./baseAssignValue.js');
+require('./assignValue.js');

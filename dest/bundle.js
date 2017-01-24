@@ -70,6 +70,12 @@
 	__webpack_require__(22);
 	__webpack_require__(23);
 	__webpack_require__(24);
+	__webpack_require__(25);
+	__webpack_require__(26);
+	__webpack_require__(27);
+	__webpack_require__(28);
+	__webpack_require__(29);
+	__webpack_require__(30);
 
 /***/ },
 /* 1 */
@@ -1219,9 +1225,304 @@
 
 	exports.default = arraySampleSize;
 
+	// var a = [1,2,3,4,5,6,7,8];
+	// console.log(arraySampleSize(a, 4));
 
-	var a = [1, 2, 3, 4, 5, 6, 7, 8];
-	console.log('aaa:', arraySampleSize(a, 4));
+/***/ },
+/* 25 */
+/***/ function(module, exports) {
+
+	'use strict';
+	/**
+	 * A specialized version of `some` for arrays.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to iterate over.
+	 * @param {Function} predicate The function invoked per iteration.
+	 * @returns {boolean} Returns `true` if any element passes the predicate check,
+	 *  else `false`.
+	 */
+	// 参数： 一个array，一个每个循环都会调用的函数（这个函数的参数是array的value和key pair）
+	// 返回值：是否有能让调用函数返回true的值
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	function arraySome(array, predicate) {
+	  var index = -1;
+	  var length = array == null ? 0 : array.length;;
+
+	  while (++index < length) {
+	    if (predicate(array[index], index, array)) {
+	      return true;
+	    };
+	  }
+	  return false;
+	}
+
+	exports.default = arraySome;
+
+	// var f = function(value, key, array) {
+	// 	if (value % 6 === 2)
+	// 		return true;
+	// };
+	// console.log(arraySome([1,2,3,4,5,6], f)); // true
+	// console.log(arraySome([3,4,5,6], f)); // false
+
+/***/ },
+/* 26 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/**
+	 * Gets the size of an ASCII `string`.
+	 *
+	 * @private
+	 * @param {string} string The string inspect.
+	 * @returns {number} Returns the string size.
+	 */
+	function asciiSize(_ref) {
+	  var length = _ref.length;
+
+	  return length;
+	}
+
+	exports.default = asciiSize;
+
+	// 注意，这里单独运行这个文件的时候需要加上兼容ES6的命令：node --harmony_destructuring asciiSize.js
+	// console.log(asciiSize('string')); // 6
+	// console.log(asciiSize({name: 'Bowen'})); // undefined
+	// console.log(asciiSize(function(v1,v2) {})); // 2
+	// console.log(asciiSize(undefined)); // 报错
+
+/***/ },
+/* 27 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/**
+	 * Converts an ASCII `string` to an array.
+	 *
+	 * @private
+	 * @param {string} string The string to convert.
+	 * @returns {Array} Returns the converted array.
+	 */
+	// 参数：一个string
+	// 返回值：一个从string转换而来的array
+	// 注意，string的split方法做的事就是将string分割到一个array中。不会改变原来的string。
+	function asciiToArray(string) {
+	  return string.split('');
+	}
+
+	exports.default = asciiToArray;
+
+	// console.log(asciiToArray("")); // []
+	// console.log(asciiToArray("string")); // [ 's', 't', 'r', 'i', 'n', 'g' ]
+	// console.log(asciiToArray({name: 'Bowen'})); // 报错
+
+/***/ },
+/* 28 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/** Used to match words composed of alphanumeric characters. */
+	var reAsciiWord = /[^\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+/g;
+
+	/**
+	 * Splits an ASCII `string` into an array of its words.
+	 *
+	 * @private
+	 * @param {string} The string to inspect.
+	 * @returns {Array} Returns the words of `string`.
+	 */
+	// 这个函数做的事情就是将传入的参数用上面的正则表达式进行检验，如果检验通过，则返回由符合正则的字符串组成的数组，如果检验不通过，则返回空数组。
+	function asciiWords(string) {
+	  return string.match(reAsciiWord) || [];
+	}
+
+	exports.default = asciiWords;
+
+	// console.log(asciiWords('it is a string')); // [ 'it', 'is', 'a', 'string' ]
+	// console.log(asciiWords('str****ing')); // [ 'str', 'ing' ]
+	// console.log(asciiWords('****')); // []  实际是null，但是函数里面处理掉了
+
+	// 如果我们把上面的g flag取掉，我们看下结果
+	// console.log(asciiWords('it is a string')); // [ 'it', index: 0, input: 'it is a string' ]
+	// console.log(asciiWords('str****ing')); // [ 'str', index: 0, input: 'str****ing' ]
+	// console.log(asciiWords('****')); // []  实际是null，但是函数里面处理掉了
+
+/***/ },
+/* 29 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	/**
+	 * The base implementation of `assignValue` and `assignMergeValue` without
+	 * value checks.
+	 *
+	 * @private
+	 * @param {Object} object The object to modify.
+	 * @param {string} key The key of the property to assign.
+	 * @param {*} value The value to assign.
+	 */
+	// 参数：一个目标对象，一个key值，一个value值
+	// 返回值：被定义了属性之后的object
+	function baseAssignValue(object, key, value) {
+		if (key === '__proto__') {
+			Object.defineProperty(object, key, {
+				configurable: true,
+				enumerable: true,
+				value: value,
+				writable: true
+			});
+		} else {
+			object[key] = value;
+		}
+	}
+
+	exports.default = baseAssignValue;
+
+	// var a = {};
+	// baseAssignValue(a, 'name', 'Bowen');
+	// baseAssignValue(a, 'age', 23);
+	// baseAssignValue(a, '__proto__', 'Can I Do It?');
+	// baseAssignValue(a, undefined, undefined);
+	// baseAssignValue(a, null, null);
+	// baseAssignValue(a, NaN, NaN);
+	// console.log(a);
+
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _baseAssignValue = __webpack_require__(29);
+
+	var _baseAssignValue2 = _interopRequireDefault(_baseAssignValue);
+
+	var _eq = __webpack_require__(31);
+
+	var _eq2 = _interopRequireDefault(_eq);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+	/**
+	 * Assigns `value` to `key` of `object` if the existing value is not equivalent
+	 * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+	 * for equality comparisons.
+	 *
+	 * @private
+	 * @param {Object} object The object to modify.
+	 * @param {string} key The key of the property to assign.
+	 * @param {*} value The value to assign.
+	 */
+	// 变量：一个目标对象，一个key值，一个value值
+	// 返回：没有返回值，只是进行赋值操作。
+	// 这里我们只想给own property赋值
+	// 这个函数做的事情：给一个对象的属性赋值，除非这个对象已经有这个属性且值相等。还有一种情况也可以赋值，就是
+	// 赋的值是undefined，且这个object中不存在这个key。
+	function assignValue(object, key, value) {
+	  var objValue = object[key];
+	  if (!(hasOwnProperty.call(object, key) && (0, _eq2.default)(objValue, value)) || value === undefined && !(key in object)) {
+	    (0, _baseAssignValue2.default)(object, key, value);
+	  }
+	}
+
+	exports.default = assignValue;
+
+
+	var a = { name: 'Bowen', age: 24 };
+	assignValue(a, 'name', 'Bowen2');
+	assignValue(a, 'height', undefined);
+	console.log(a);
+
+/***/ },
+/* 31 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/**
+	 * Performs a
+	 * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+	 * comparison between two values to determine if they are equivalent.
+	 *
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to compare.
+	 * @param {*} other The other value to compare.
+	 * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+	 * @example
+	 *
+	 * const object = { 'a': 1 };
+	 * const other = { 'a': 1 };
+	 *
+	 * eq(object, object);
+	 * // => true
+	 *
+	 * eq(object, other);
+	 * // => false
+	 *
+	 * eq('a', 'a');
+	 * // => true
+	 *
+	 * eq('a', Object('a'));
+	 * // => false
+	 *
+	 * eq(NaN, NaN);
+	 * // => true
+	 */
+	// 参数：两个需要相互比较的值
+	// 返回值：是否两个比较的值相等
+	// 这个函数主要处理一些两个值是NaN的特殊情况。
+	function eq(value, other) {
+	  // 这是第一步的写法，然后简化到最终的写法。
+	  // if (value !== value && other !== other) {
+	  // 	return true;
+	  // } else {
+	  // 	return value === other;
+	  // }
+	  return value === other || value !== value && other !== other;
+	}
+
+	exports.default = eq;
+
+	// var a = 123,
+	// 	b = '123',
+	// 	c = 123;
+	// var o1 = {name: 'Bowen'};
+	// var o2 = {name: 'Bowen'};
+	// console.log(eq(a,b)); // false
+	// console.log(eq(a,c)); // true
+	// console.log(eq(o1,o2)); // false
+	// console.log(eq(o1,o1)); // true
+	// console.log(eq(NaN, NaN)); // true
 
 /***/ }
 /******/ ]);
