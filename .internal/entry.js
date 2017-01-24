@@ -33,3 +33,4 @@ require('./assignMergeValue.js');
 require('./assocIndexOf.js');
 require('./copyObject.js');
 require('./arrayShuffle.js');
+require('./baseConformsTo.js');
