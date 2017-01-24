@@ -79,6 +79,7 @@
 	__webpack_require__(32);
 	__webpack_require__(33);
 	__webpack_require__(34);
+	__webpack_require__(35);
 
 /***/ },
 /* 1 */
@@ -1082,6 +1083,9 @@
 	// 参数：需要被拷贝的array，目标数组
 	// 返回：目标数组
 
+	// 注意下面的写法，我们不能直接拿source这个array给目标array赋值，因为这样就让两个array指向了同一个引用，某个数组的变化都会
+	// 反应到另外一个array中。
+
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
@@ -1699,32 +1703,74 @@
 
 	exports.default = copyObject;
 
+	// var source = {
+	// 	name: 'Bowen',
+	// 	height: 183,
+	// 	weight: 80,
+	// 	age: 24,
+	// 	tel: undefined
+	// };
 
-	var source = {
-		name: 'Bowen',
-		height: 183,
-		weight: 80,
-		age: 24,
-		tel: undefined
-	};
+	// var targetObject = {},
+	// 	targetObject2 = {'name': 'Hui'},
+	// 	targetObject3;
 
-	var targetObject = {},
-	    targetObject2 = { 'name': 'Hui' },
-	    targetObject3;
+	// var props = ['name', 'age', 'company'];
+	// var customizer = function (objectProperty, sourceProperty, key, object, source) {
+	// 	return 'Bowen personal: ' + sourceProperty
+	// };
+	// var customizer2 = function (objectProperty, sourceProperty, key, object, source) {
+	// 	return undefined;
+	// };
 
-	var props = ['name', 'age', 'company'];
-	var customizer = function customizer(objectProperty, sourceProperty, key, object, source) {
-		return 'Bowen personal: ' + sourceProperty;
-	};
-	var customizer2 = function customizer2(objectProperty, sourceProperty, key, object, source) {
-		return undefined;
-	};
+	// console.log(copyObject(source, props, targetObject, customizer));
+	// console.log(copyObject(source, props, targetObject2, customizer));
+	// console.log(copyObject(source, props, targetObject3, customizer));
 
-	console.log(copyObject(source, props, targetObject, customizer));
-	console.log(copyObject(source, props, targetObject2, customizer));
-	console.log(copyObject(source, props, targetObject3, customizer));
+	// console.log(copyObject(source, props, targetObject, customizer2));
 
-	console.log(copyObject(source, props, targetObject, customizer2));
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _copyArray = __webpack_require__(22);
+
+	var _copyArray2 = _interopRequireDefault(_copyArray);
+
+	var _shuffleSelf = __webpack_require__(23);
+
+	var _shuffleSelf2 = _interopRequireDefault(_shuffleSelf);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * A specialized version of `shuffle` for arrays.
+	 *
+	 * @private
+	 * @param {Array} array The array to shuffle.
+	 * @returns {Array} Returns the new shuffled array.
+	 */
+	// 参数：一个数组
+	// 返回的参数：一个新的被打乱（shuffled）之后的数组
+	function arrayShuffle(array) {
+	  return (0, _shuffleSelf2.default)((0, _copyArray2.default)(array));
+	}
+
+	exports.default = arrayShuffle;
+
+
+	var a = [1, 2, 3, 4];
+	var f = function f(v1, v2) {};
+	var s = 'string';
+	console.log(arrayShuffle(a));
+	console.log(arrayShuffle(f));
+	console.log(arrayShuffle(s));
 
 /***/ }
 /******/ ]);

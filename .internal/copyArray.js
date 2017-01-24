@@ -12,6 +12,8 @@
 // 参数：需要被拷贝的array，目标数组
 // 返回：目标数组
 
+// 注意下面的写法，我们不能直接拿source这个array给目标array赋值，因为这样就让两个array指向了同一个引用，某个数组的变化都会
+// 反应到另外一个array中。
 function copyArray(source, array) {
 	let index = -1;
 	const length = source.length;
