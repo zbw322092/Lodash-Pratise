@@ -78,6 +78,7 @@
 	__webpack_require__(30);
 	__webpack_require__(32);
 	__webpack_require__(33);
+	__webpack_require__(34);
 
 /***/ },
 /* 1 */
@@ -1624,12 +1625,106 @@
 
 	exports.default = assocIndexOf;
 
+	// var a = [[0, 'Bowen'],[1, 'Hui'], [2, 'John'], [3,'Jason']];
+	// console.log(assocIndexOf(a, 5)); // -1
+	// console.log(assocIndexOf(a, 3)); // 3
+	// console.log(assocIndexOf(a, '3')); // -1
+	// console.log(assocIndexOf(a, 'Bowen')); // -1
 
-	var a = [[0, 'Bowen'], [1, 'Hui'], [2, 'John'], [3, 'Jason']];
-	console.log(assocIndexOf(a, 5)); // -1
-	console.log(assocIndexOf(a, 3)); // 3
-	console.log(assocIndexOf(a, '3')); // 3
-	console.log(assocIndexOf(a, 'Bowen')); // -1
+/***/ },
+/* 34 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _assignValue = __webpack_require__(30);
+
+	var _assignValue2 = _interopRequireDefault(_assignValue);
+
+	var _baseAssignValue = __webpack_require__(29);
+
+	var _baseAssignValue2 = _interopRequireDefault(_baseAssignValue);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * Copies properties of `source` to `object`.
+	 *
+	 * @private
+	 * @param {Object} source The object to copy properties from.
+	 * @param {Array} props The property identifiers to copy.
+	 * @param {Object} [object={}] The object to copy properties to.
+	 * @param {Function} [customizer] The function to customize copied values.
+	 * @returns {Object} Returns `object`.
+	 */
+	// 参数：一个copy from的对象，一个copy to的对象，哪些properties需要被copy，一个定制copy value的function.
+	function copyObject(source, props, object, customizer) {
+		// let length = props.length;
+		// while (length--) {
+		// 	object[props[length]] = customizer(source[props[length]]);
+		// }
+		// return object;
+
+		// 上面的是自己实现的，和官方的代码差别主要在于官方代码对传入的参数做了一些处理。
+		var isNew = !object;
+		object || (object = {});
+
+		var index = -1;
+		var length = props.length;
+
+		while (++index < length) {
+			var key = props[index];
+
+			// 这里也对于customizer是否存在做了处理。
+			var newValue = customizer ? customizer(object[key], source[key], key, object, source) : undefined;
+
+			// 这样写了过滤了customizer返回值也是undefined的情况
+			if (newValue === undefined) {
+				newValue = source[key];
+			}
+
+			// 这里区分了copy to的对象是否是{}的情况
+			if (isNew) {
+				(0, _baseAssignValue2.default)(object, key, newValue);
+			} else {
+				(0, _assignValue2.default)(object, key, newValue);
+			}
+		}
+		return object;
+	}
+
+	exports.default = copyObject;
+
+
+	var source = {
+		name: 'Bowen',
+		height: 183,
+		weight: 80,
+		age: 24,
+		tel: undefined
+	};
+
+	var targetObject = {},
+	    targetObject2 = { 'name': 'Hui' },
+	    targetObject3;
+
+	var props = ['name', 'age', 'company'];
+	var customizer = function customizer(objectProperty, sourceProperty, key, object, source) {
+		return 'Bowen personal: ' + sourceProperty;
+	};
+	var customizer2 = function customizer2(objectProperty, sourceProperty, key, object, source) {
+		return undefined;
+	};
+
+	console.log(copyObject(source, props, targetObject, customizer));
+	console.log(copyObject(source, props, targetObject2, customizer));
+	console.log(copyObject(source, props, targetObject3, customizer));
+
+	console.log(copyObject(source, props, targetObject, customizer2));
 
 /***/ }
 /******/ ]);
