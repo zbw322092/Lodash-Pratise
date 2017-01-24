@@ -76,6 +76,7 @@
 	__webpack_require__(28);
 	__webpack_require__(29);
 	__webpack_require__(30);
+	__webpack_require__(32);
 
 /***/ },
 /* 1 */
@@ -1453,11 +1454,10 @@
 
 	exports.default = assignValue;
 
-
-	var a = { name: 'Bowen', age: 24 };
-	assignValue(a, 'name', 'Bowen2');
-	assignValue(a, 'height', undefined);
-	console.log(a);
+	// var a = {name:'Bowen', age: 24};
+	// assignValue(a, 'name', 'Bowen2');
+	// assignValue(a, 'height', undefined);
+	// console.log(a); // { name: 'Bowen2', age: 24, height: undefined }
 
 /***/ },
 /* 31 */
@@ -1523,6 +1523,57 @@
 	// console.log(eq(o1,o2)); // false
 	// console.log(eq(o1,o1)); // true
 	// console.log(eq(NaN, NaN)); // true
+
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _baseAssignValue = __webpack_require__(29);
+
+	var _baseAssignValue2 = _interopRequireDefault(_baseAssignValue);
+
+	var _eq = __webpack_require__(31);
+
+	var _eq2 = _interopRequireDefault(_eq);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * This function is like `assignValue` except that it doesn't assign
+	 * `undefined` values.
+	 *
+	 * @private
+	 * @param {Object} object The object to modify.
+	 * @param {string} key The key of the property to assign.
+	 * @param {*} value The value to assign.
+	 */
+	// 参数：目标对象，一个key值，一个value值
+	// 返回值：没有返回值，只是进行赋值
+	// 给一个对象自己的属性进行赋值，只要这个值和已经存在的值不相等，且这个值不是undefined。
+	// 或者现在这个对象没有这个属性，且要赋值的属性值是undefined。
+	function assignMergeValue(object, key, value) {
+	  // 注意，这里我们不需要在使用Object.prototype.hasOwnProperty来检测是否存在这个属性，因为我们限制不能是
+	  // undefined，所以相等成立的时候这个属性在对象中必然是存在的。
+	  if (value !== undefined && !(0, _eq2.default)(object[key], value) || value === undefined && !(key in object)) {
+	    (0, _baseAssignValue2.default)(object, key, value);
+	  }
+	}
+
+	exports.default = assignMergeValue;
+
+
+	var a = { name: 'Bowen', age: 23 };
+	assignMergeValue(a, 'name', undefined);
+	assignMergeValue(a, 'age', 24);
+	assignMergeValue(a, 'height', 183);
+	assignMergeValue(a, 'weight', 80);
+	console.log(a);
 
 /***/ }
 /******/ ]);
