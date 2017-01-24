@@ -30,3 +30,4 @@ require('./asciiWords.js');
 require('./baseAssignValue.js');
 require('./assignValue.js');
 require('./assignMergeValue.js');
+require('./assocIndexOf.js');

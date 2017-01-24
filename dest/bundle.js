@@ -77,6 +77,7 @@
 	__webpack_require__(29);
 	__webpack_require__(30);
 	__webpack_require__(32);
+	__webpack_require__(33);
 
 /***/ },
 /* 1 */
@@ -1567,13 +1568,68 @@
 
 	exports.default = assignMergeValue;
 
+	// var a = {name: 'Bowen', age: 23};
+	// assignMergeValue(a, 'name', undefined);
+	// assignMergeValue(a, 'age', 24);
+	// assignMergeValue(a, 'height', 183);
+	// assignMergeValue(a, 'weight', 80);
+	// console.log(a); // { name: 'Bowen', age: 24, height: 183, weight: 80 }
 
-	var a = { name: 'Bowen', age: 23 };
-	assignMergeValue(a, 'name', undefined);
-	assignMergeValue(a, 'age', 24);
-	assignMergeValue(a, 'height', 183);
-	assignMergeValue(a, 'weight', 80);
-	console.log(a);
+/***/ },
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _eq = __webpack_require__(31);
+
+	var _eq2 = _interopRequireDefault(_eq);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * Gets the index at which the `key` is found in `array` of key-value pairs.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {*} key The key to search for.
+	 * @returns {number} Returns the index of the matched value, else `-1`.
+	 */
+	// 参数：一个array，一个key值
+	// 返回值：这个key值在array的什么位置
+	function assocIndexOf(array, key) {
+		// let index = -1;
+		// const length = array.length;
+
+		// while (++index < length) {
+		// 	if (eq(array[index][0], key))
+		// 		return index;
+		// }
+		// return -1;
+
+
+		// 上面是自己实现的这个函数。下面是官方的代码， 更加的简洁。
+		var length = array.length;
+		while (length--) {
+			if ((0, _eq2.default)(array[length][0], key)) {
+				return length;
+			}
+		}
+		return -1;
+	}
+
+	exports.default = assocIndexOf;
+
+
+	var a = [[0, 'Bowen'], [1, 'Hui'], [2, 'John'], [3, 'Jason']];
+	console.log(assocIndexOf(a, 5)); // -1
+	console.log(assocIndexOf(a, 3)); // 3
+	console.log(assocIndexOf(a, '3')); // 3
+	console.log(assocIndexOf(a, 'Bowen')); // -1
 
 /***/ }
 /******/ ]);
