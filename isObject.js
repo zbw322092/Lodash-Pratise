@@ -30,8 +30,9 @@ function isObject(value) {
 	// 	将value != null前置了，如果是null或者undefined就直接排除，不用执行后面的操作。
 	// 	命名了type方法
 	// 暂时不明确的一点：为什么在比较的时候使用了非严格判断的==
-	const type = typeof;
-	return value != null && (type value == 'object' || type value == 'function');
+	// 注意，不能这么写: const type = typeof;
+	const type = typeof value;
+	return value != null && (type == 'object' || type == 'function');
 }
 
 export default isObject;

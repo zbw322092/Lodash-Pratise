@@ -80,6 +80,8 @@
 	__webpack_require__(33);
 	__webpack_require__(34);
 	__webpack_require__(35);
+	__webpack_require__(36);
+	__webpack_require__(37);
 
 /***/ },
 /* 1 */
@@ -1764,13 +1766,185 @@
 
 	exports.default = arrayShuffle;
 
+	// var a = [1,2,3,4];
+	// var f = function(v1,v2) {};
+	// var s = 'string';
+	// console.log(arrayShuffle(a)); // [ 4, 2, 1, 3 ]
+	// console.log(arrayShuffle(f)); // [ undefined, undefined ]
+	// console.log(arrayShuffle(s)); // [ 't', 'n', 'i', 's', 'r', 'g' ]
 
-	var a = [1, 2, 3, 4];
-	var f = function f(v1, v2) {};
-	var s = 'string';
-	console.log(arrayShuffle(a));
-	console.log(arrayShuffle(f));
-	console.log(arrayShuffle(s));
+/***/ },
+/* 36 */
+/***/ function(module, exports) {
+
+	'use strict';
+	/**
+	 * The base implementation of `conformsTo` which accepts `props` to check.
+	 *
+	 * @private
+	 * @param {Object} object The object to inspect.
+	 * @param {Object} source The object of property predicates to conform to.
+	 * @returns {boolean} Returns `true` if `object` conforms, else `false`.
+	 */
+	// 参数：一个源数组，一个目标数组，一个包含properties的array
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	function baseConformsTo(object, source, props) {
+		var length = props.length;
+		if (object == null) {
+			return !length;
+		}
+
+		while (length--) {
+			var key = props[length];
+			var predicate = source[key];
+			var value = object[key];
+
+			// 这里value === undefined && !(key in object)的意思也就是如果value是undefined，且是因为
+			// key在这个object中不存在引起的，那么就返回false
+			if (value === undefined && !(key in object) || !predicate(value)) {
+				return false;
+			}
+
+			// 注意下面的写法和上面的写法的区别。下面写法的问题在于，如果predicate不存在，predicate(value)这里就会首先报错。
+			// if (!predicate(value) || (value === undefined && !(key in object))) {
+			// 	return false;
+			// }
+		}
+		return true;
+	}
+
+	exports.default = baseConformsTo;
+
+	// var object = {name: 'Bowen', age: 23, height: 183};
+	// var object2 = {name: 'Bowen', age: 23, height: 183, company: undefined};
+	// var source = {
+	// 	name: function(value) {
+	// 		return value.length < 20
+	// 	},
+	// 	age: function(value) {
+	// 		return (typeof value === 'number') && (18 <= value <= 30);
+	// 	},
+	// 	height: function(value) {
+	// 		return value !== undefined;
+	// 	},
+	// 	company: function(value) {
+	// 		return value == undefined;
+	// 	}
+	// };
+	// var props = ['name', 'age'];
+	// var props2 = ['name', 'age', 'height'];
+	// var props3 = ['name', 'age', 'height', 'company'];
+	// var props4 = [];
+
+	// console.log(baseConformsTo(object, source, props)); // true
+	// console.log(baseConformsTo(object, source, props2)); // true
+	// console.log(baseConformsTo(object, source, props3)); // false
+	// console.log(baseConformsTo(object2, source, props3)); // true
+	// console.log(baseConformsTo(object, source, props4)); // true
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _isObject = __webpack_require__(38);
+
+	var _isObject2 = _interopRequireDefault(_isObject);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * The base implementation of `create` without support for assigning
+	 * properties to the created object.
+	 *
+	 * @private
+	 * @param {Object} proto The object to inherit from.
+	 * @returns {Object} Returns the new object.
+	 */
+	// 参数：一个需要被继承的prototype
+	// 返回值：一个新的object
+	// 这个函数做的一个简单的处理就是判断下proto是不是对象，如果不是就直接返回一个空对象。
+	function baseCreate(proto) {
+	  return (0, _isObject2.default)(proto) ? Object.create(proto) : {};
+	}
+
+	exports.default = baseCreate;
+
+
+	var a = {
+	  name: 'Bowen',
+	  age: 24,
+	  company: undefined
+	};
+	var b = [1, 2, 3, 4, 5, 6];
+	var c = function c() {};
+	var d = 'string';
+	var o = {};
+	o.prototype = a;
+	console.log(baseCreate(a));
+	console.log(baseCreate(b));
+	console.log(baseCreate(c));
+	console.log(baseCreate(d));
+	console.log(baseCreate(o));
+
+/***/ },
+/* 38 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	/**
+	 * Checks if `value` is the
+	 * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+	 * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * isObject({});
+	 * // => true
+	 *
+	 * isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * isObject(Function);
+	 * // => true
+	 *
+	 * isObject(null);
+	 * // => false
+	 */
+	// 参数：一个待检查的值
+	// 返回值：这个待检查的值是否是object类型的值
+	function isObject(value) {
+	  // return (typeof value === 'object' || typeof value === 'function') && (value !== null);
+	  // 根据上面的写法的改进版本（也许会带来执行效率上的提升，待考证）：
+	  // 下面的改进点在于：
+	  // 	将value != null前置了，如果是null或者undefined就直接排除，不用执行后面的操作。
+	  // 	命名了type方法
+	  // 暂时不明确的一点：为什么在比较的时候使用了非严格判断的==
+	  // 注意，不能这么写: const type = typeof;
+	  var type = typeof value === 'undefined' ? 'undefined' : _typeof(value);
+	  return value != null && (type == 'object' || type == 'function');
+	}
+
+	exports.default = isObject;
 
 /***/ }
 /******/ ]);
