@@ -35,3 +35,6 @@ require('./copyObject.js');
 require('./arrayShuffle.js');
 require('./baseConformsTo.js');
 require('./baseCreate.js');
+require('./baseFindKey.js');
+require('./baseHas.js');
+
